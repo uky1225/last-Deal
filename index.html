@@ -1,0 +1,591 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#151310">
+<title>LAST DEAL — 마지막 판</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Gowun+Batang:wght@400;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root{--ink:#eee7d8;--muted:#aa9f8b;--faint:#716958;--gold:#d6b77b;--gold2:#f0d8a2;--red:#9f3e35;--felt:#173c32;--felt2:#0e2c25;--line:rgba(231,211,166,.22);--paper:#e5d6b8;--black:#171713;--mono:"DM Mono",Consolas,monospace;--display:"Gowun Batang",Georgia,serif;--sans:Manrope,"Malgun Gothic",sans-serif}
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;background:#11110f;color:var(--ink);font-family:var(--sans)}body{min-height:100vh;overflow-x:hidden}button,input{font:inherit}button{color:inherit;cursor:pointer}button:focus-visible,input:focus-visible{outline:2px solid var(--gold2);outline-offset:3px}.hidden{display:none!important}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:20;opacity:.12;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.92' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.25'/%3E%3C/svg%3E");mix-blend-mode:soft-light}
+.eyebrow{font:500 10px var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--gold)}.serif{font-family:var(--display)}.gold{color:var(--gold2)}.muted{color:var(--muted)}
+.screen{min-height:100vh;position:relative}
+/* Lobby */
+#lobby{overflow:hidden;background:radial-gradient(ellipse at 73% 47%,#4b251a 0,#241914 27%,#151310 60%),#151310}
+.lobby-top{position:absolute;top:0;left:0;right:0;padding:28px 5.4vw;display:flex;justify-content:space-between;align-items:center;z-index:2}
+.wordmark{display:flex;gap:12px;align-items:center;font:500 11px var(--mono);letter-spacing:.17em;color:#e6d7bd}.seal{width:30px;height:30px;border:1px solid #8b7048;border-radius:50%;display:grid;place-items:center;color:var(--gold);font:16px var(--display);box-shadow:inset 0 0 0 3px #151310,inset 0 0 0 4px #8b704855}
+.lobby-tools{display:flex;gap:12px}.quiet-btn{background:none;border:1px solid #534839;color:#c9bea9;padding:10px 15px;font-size:11px;letter-spacing:.1em;transition:.25s}.quiet-btn:hover{border-color:var(--gold);color:var(--gold2)}
+.lobby-wrap{max-width:1380px;margin:auto;min-height:100vh;padding:142px 7vw 72px;display:grid;grid-template-columns:1fr 1.12fr;gap:4vw;align-items:center;position:relative}
+.hero-copy{position:relative;z-index:1;padding-bottom:24px}.hero-copy .eyebrow{display:flex;align-items:center;gap:12px}.hero-copy .eyebrow:before{content:"";width:30px;height:1px;background:var(--gold)}
+h1{font:400 clamp(56px,8vw,112px)/.95 var(--display);letter-spacing:-.07em;margin:25px 0 8px;text-shadow:0 5px 45px #000}.title-en{font:500 clamp(13px,1.4vw,18px) var(--mono);letter-spacing:.46em;color:#bdab8a;margin-left:5px}
+.hero-desc{font:400 15px/1.9 var(--display);color:#bdb29f;max-width:390px;margin:31px 0 36px}.hero-actions{display:flex;align-items:center;gap:18px}
+.primary-btn{position:relative;border:1px solid #ddc38b;background:linear-gradient(145deg,#dec999,#b39862);color:#201a10;font:700 12px var(--sans);letter-spacing:.13em;padding:16px 26px;min-width:172px;box-shadow:0 9px 28px #0005;transition:transform .2s,filter .2s}.primary-btn:after{content:"";position:absolute;inset:4px;border:1px solid #40321b4d;pointer-events:none}.primary-btn:hover{transform:translateY(-2px);filter:brightness(1.08)}
+.text-btn{background:none;border:0;color:#bbae98;font:500 11px var(--mono);letter-spacing:.11em;padding:13px 8px}.text-btn:hover{color:var(--gold2)}
+.lobby-foot{position:absolute;left:7vw;bottom:28px;font:9px var(--mono);letter-spacing:.16em;color:#746956}.lobby-foot span{color:#bda675}
+.table-art{height:min(62vw,670px);min-height:450px;position:relative;display:grid;place-items:center;perspective:1100px}
+.table-shadow{position:absolute;width:106%;height:52%;top:52%;border-radius:50%;background:#000b;filter:blur(52px);transform:rotate(-8deg)}
+.lobby-table{position:absolute;width:100%;height:68%;top:17%;border-radius:50%;transform:rotate(-9deg);background:radial-gradient(ellipse at 42% 38%,#245447 0,#174135 45%,#102c25 76%);border:13px solid #452a1c;box-shadow:inset 0 0 0 2px #ad85504d,inset 0 0 70px #071a15,0 22px 30px #0008}
+.lobby-table:before{content:"";position:absolute;inset:10px;border-radius:50%;border:1px solid #c9b37b2c;box-shadow:inset 0 0 0 4px #102a241a}
+.table-stamp{position:absolute;left:50%;top:53%;transform:translate(-50%,-50%) rotate(-9deg);font:10px var(--mono);letter-spacing:.32em;color:#c4b38257;white-space:nowrap}
+.hero-cards{position:absolute;left:52%;top:29%;width:208px;height:278px;transform:rotate(10deg);filter:drop-shadow(0 25px 14px #0007)}
+.art-card{position:absolute;width:180px;height:250px;border-radius:9px;border:1px solid #ddcba6;background:#e7ddc8;color:#24201a;padding:13px;box-shadow:0 2px 0 #b6a687,inset 0 0 0 5px #e7ddc8,inset 0 0 0 6px #9d8c6b}
+.art-card.back{left:26px;top:-17px;transform:rotate(17deg);background-color:#722e2a;background-image:repeating-linear-gradient(45deg,transparent 0 7px,#d7b48040 7px 8px),repeating-linear-gradient(-45deg,transparent 0 7px,#d7b48040 7px 8px);border-color:#b99a69}
+.art-card.front{left:0;top:0;transform:rotate(-7deg);display:flex;flex-direction:column;justify-content:space-between}
+.art-card .corner{font:17px var(--display);line-height:1.1}.art-card .corner small{display:block;font-size:12px}.art-card .suit-center{align-self:center;font-size:68px;color:#82352f}.art-card .card-word{font:9px var(--mono);letter-spacing:.14em;color:#6b614d}
+.lobby-token{position:absolute;border-radius:50%;width:80px;height:80px;background:radial-gradient(circle at 34% 28%,#f0daa2 0,#b79555 52%,#775d35 74%,#e4cd97 76%,#725733 84%);border:1px solid #e8d4a0;box-shadow:0 17px 20px #0008;display:grid;place-items:center;color:#3c2d19;font:22px var(--display);z-index:3}.lobby-token:before{content:"";position:absolute;inset:8px;border:1px dashed #6e522a;border-radius:50%}.token-one{bottom:22%;left:10%;transform:rotate(-13deg)}.token-two{top:18%;right:7%;width:58px;height:58px;transform:rotate(21deg)}
+.art-note{position:absolute;right:2%;bottom:6%;font:9px var(--mono);letter-spacing:.17em;color:#98866a;transform:rotate(-9deg)}
+.archive-peek{margin-top:35px;border-top:1px solid #5e503b7a;padding-top:16px;display:flex;align-items:center;gap:12px;color:#887d69;font:10px var(--mono);letter-spacing:.08em}.archive-peek strong{font-weight:400;color:#c6b48c}
+/* Intro / contract */
+#arrival{background:#0d0d0c;display:grid;place-items:center;overflow:hidden}
+.corridor{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 58%,#54301c 0,#251b14 20%,#0d0d0c 65%);animation:arrivalGlow 2.6s ease both}
+.corridor:before,.corridor:after{content:"";position:absolute;top:-15%;height:130%;width:26%;border:1px solid #af8e5940;transform:perspective(400px) rotateY(20deg);background:linear-gradient(90deg,#0008,#79513020,#0008);filter:blur(.4px)}.corridor:before{left:-8%;transform:skewY(-15deg)}.corridor:after{right:-8%;transform:skewY(15deg)}
+.door-light{position:absolute;bottom:-2%;left:50%;transform:translateX(-50%);width:35%;height:82%;background:linear-gradient(0deg,#d6a45a30,#cf8d4820 40%,transparent 80%);clip-path:polygon(32% 0,68% 0,100% 100%,0 100%);filter:blur(18px)}
+.arrival-copy{position:relative;text-align:center;z-index:1;margin-top:43vh;animation:fadeUp 1.2s .5s both}.arrival-copy h2{font:400 30px var(--display);letter-spacing:.04em;margin:12px 0}.arrival-copy p{font:10px var(--mono);letter-spacing:.18em;color:#92866f}
+@keyframes arrivalGlow{from{opacity:0;transform:scale(1.2)}to{opacity:1;transform:scale(1)}}@keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.hall-arch{position:absolute;left:28%;right:28%;top:3%;height:100%;border:1px solid #c19b5f55;border-bottom:0;border-radius:48% 48% 0 0 / 24% 24% 0 0;box-shadow:0 0 0 24px #271d1433,0 0 0 25px #be965033,inset 0 0 85px #e3b97118;animation:archPass 2.5s ease both;pointer-events:none}
+.hall-arch:before{content:"";position:absolute;inset:7% 8% 0;border:1px solid #c19b5f35;border-bottom:0;border-radius:48% 48% 0 0 / 24% 24% 0 0}
+.hall-floor{position:absolute;left:-12%;right:-12%;bottom:-21%;height:54%;transform:perspective(240px) rotateX(47deg);transform-origin:top;background:repeating-linear-gradient(90deg,transparent 0 10%,#c5a06a20 10.15% 10.35%,transparent 10.5% 20%),repeating-linear-gradient(0deg,transparent 0 18%,#c5a06a20 18.2% 18.5%,transparent 18.7% 36%);mask-image:linear-gradient(180deg,#000,transparent)}
+.walk-silhouette{position:absolute;z-index:1;bottom:8%;left:50%;width:54px;height:154px;transform:translateX(-50%);animation:walkToTable 2.25s cubic-bezier(.28,.6,.42,1) both;filter:drop-shadow(0 0 20px #d5a75b30)}
+.walk-silhouette:before{content:"";position:absolute;left:17px;top:0;width:22px;height:27px;border-radius:50%;background:linear-gradient(90deg,#11100f,#29211b,#080808)}
+.walk-silhouette:after{content:"";position:absolute;left:7px;top:25px;width:41px;height:88px;background:linear-gradient(90deg,#080908,#25211a 46%,#090a09);clip-path:polygon(22% 0,78% 0,100% 24%,77% 48%,94% 100%,7% 100%,23% 48%,0 24%)}
+.walk-silhouette i{position:absolute;left:14px;top:100px;width:10px;height:53px;background:#10100e;transform:rotate(4deg)}.walk-silhouette i:after{content:"";position:absolute;left:17px;top:0;width:10px;height:53px;background:#171512;transform:rotate(-8deg)}
+@keyframes archPass{from{transform:scale(1.2);opacity:.25}to{transform:scale(1);opacity:1}}
+@keyframes walkToTable{0%{opacity:0;transform:translate(-50%,35px) scale(.55)}20%{opacity:.85}100%{opacity:.38;transform:translate(-50%,-8px) scale(.72)}}
+#contract{position:absolute;inset:0;background:#10100fdd;display:grid;place-items:center;z-index:3;backdrop-filter:blur(5px);padding:20px}
+.contract-paper{width:min(600px,100%);background:linear-gradient(115deg,#d8c8a7,#e9dcc1 35%,#d4c2a0);color:#302a1e;padding:44px clamp(26px,7vw,68px) 38px;box-shadow:0 25px 80px #000c;position:relative;transform:rotate(-1deg);animation:paperLand .8s cubic-bezier(.2,.8,.2,1) both}
+.contract-paper:before{content:"";position:absolute;inset:11px;border:1px solid #79634273;pointer-events:none}.contract-paper:after{content:"";position:absolute;inset:18px;border:1px solid #7963422c;pointer-events:none}
+@keyframes paperLand{from{opacity:0;transform:translate(80px,-50px) rotate(8deg) scale(.86)}to{opacity:1;transform:rotate(-1deg) scale(1)}}
+.contract-paper .eyebrow{color:#75603a;text-align:center}.contract-paper h2{text-align:center;font:400 34px var(--display);margin:13px 0 23px}.contract-paper .contract-copy{font:13px/2.05 var(--display);color:#433b2e;border-top:1px solid #78674455;border-bottom:1px solid #78674455;padding:18px 4px;margin-bottom:20px}
+.contract-copy em{font-style:normal;color:#783c32}.sign-row{display:grid;grid-template-columns:1fr 1.15fr;gap:17px;align-items:end}.sign-label{font:10px var(--mono);letter-spacing:.12em;color:#796744}.sign-input{width:100%;background:none;border:0;border-bottom:1px solid #726345;color:#282316;padding:8px 4px;font:italic 22px var(--display)}.contract-actions{margin-top:23px;display:flex;justify-content:space-between;align-items:center}.contract-actions small{font:9px/1.6 var(--mono);color:#81765e}.contract-actions .primary-btn{min-width:155px;padding:14px 17px}
+/* Table game */
+#game{min-height:100vh;background:radial-gradient(ellipse at 51% 46%,#302319,#151310 69%);padding:22px 3vw 32px;overflow:hidden}
+.game-head{max-width:1480px;margin:0 auto 16px;display:flex;align-items:center;justify-content:space-between;position:relative;z-index:2}
+.game-brand{display:flex;align-items:center;gap:11px}.game-brand .seal{width:27px;height:27px}.game-brand strong{font:500 10px var(--mono);letter-spacing:.16em}.game-brand small{display:block;font:8px var(--mono);letter-spacing:.16em;color:#8f826b;margin-top:4px}
+.head-stats{display:flex;gap:24px;align-items:center}.stat{font:9px var(--mono);letter-spacing:.09em;color:#8f826b}.stat b{color:#d4c5a5;font-weight:400;margin-left:7px}.stat .coin{color:var(--gold)}
+.sound-btn{border:1px solid #504533;background:#1b1915;color:#afa287;width:36px;height:34px;font-size:13px}
+.casino-table{max-width:1480px;min-height:calc(100vh - 119px);margin:auto;position:relative;border:1px solid #745239;border-radius:48% / 16%;background:radial-gradient(ellipse at 50% 49%,#205141 0,#173e33 56%,#112d26 100%);box-shadow:inset 0 0 0 9px #38271b,inset 0 0 0 11px #a0804c55,inset 0 0 95px #071b16,0 20px 45px #0008;padding:25px 4% 21px;display:flex;flex-direction:column;align-items:center;overflow:hidden}
+.casino-table:before{content:"";position:absolute;inset:17px;border:1px solid #e0c58a22;border-radius:48% / 16%;pointer-events:none}.casino-table:after{content:"";position:absolute;inset:25px;background-image:radial-gradient(#e5d8bc08 .8px,transparent .9px);background-size:5px 5px;opacity:.35;pointer-events:none}
+.table-inner{position:relative;z-index:1;width:100%;max-width:1110px;display:flex;flex-direction:column;flex:1;align-items:center}
+.opponent-zone,.player-zone{width:100%;display:grid;grid-template-columns:minmax(150px,1fr) auto minmax(150px,1fr);align-items:center;gap:16px}
+.opponent-zone{min-height:154px;padding-top:5px}.player-zone{min-height:166px;padding-bottom:1px}
+.identity{display:flex;align-items:center;gap:13px}.identity.player{justify-content:flex-end;text-align:right}
+.portrait{width:62px;height:62px;border-radius:50%;position:relative;overflow:hidden;background:radial-gradient(circle at 50% 38%,#6a5140 0 19%,#2a211b 20% 34%,#080909 35%);border:1px solid #c9ae785c;box-shadow:0 5px 19px #0007}
+.portrait:before{content:"";position:absolute;left:16px;right:16px;top:23px;height:6px;background:#c0a26b;clip-path:polygon(0 0,100% 0,85% 100%,15% 100%);box-shadow:0 0 8px #d8ba80}.portrait:after{content:"";position:absolute;bottom:-6px;left:8px;right:8px;height:34px;border-radius:35% 35% 0 0;background:linear-gradient(110deg,#171719,#49433b,#101113)}
+.player-portrait{background:radial-gradient(circle at 50% 37%,#a37e56 0 19%,#493428 20% 35%,#171514 36%);border-color:#d6bd8b88}.player-portrait:before{background:#211c18;top:25px;height:4px;box-shadow:none}.player-portrait:after{background:linear-gradient(110deg,#1a1b1c,#596052,#151615)}
+.id-copy .eyebrow{font-size:8px;color:#bea777}.id-copy strong{display:block;font:400 19px var(--display);margin-top:4px;color:#e4d9c1}.id-copy small{font:9px var(--mono);color:#8c917e;display:block;margin-top:5px}
+.stack{min-width:92px;text-align:center;font:10px var(--mono);color:#a3977d;position:relative}.stack:before{content:"";display:block;width:25px;height:25px;margin:0 auto 8px;border-radius:50%;border:1px solid #e3cb8b;background:repeating-linear-gradient(0deg,#c9a85e 0 3px,#795e32 3px 5px);box-shadow:0 3px 0 -1px #44341f,0 6px 0 -2px #c9a85e,0 9px 0 -3px #44341f,0 12px 0 -4px #c9a85e}.stack b{font-size:18px;font-weight:400;color:#ead5a3;display:block;margin-bottom:4px}.stack.right{text-align:left}.stack.right:before{margin-left:0}
+.dice-area{display:flex;align-items:center;gap:14px}.dice{width:39px;height:39px;background:linear-gradient(145deg,#e2d7c0,#b9a887);border-radius:7px;color:#463b2b;box-shadow:0 4px 7px #051b16aa,inset 0 1px 2px white;display:grid;place-items:center;font-size:20px;transform:rotate(-7deg)}.dice.rolling{animation:diceRoll .65s ease-in-out}.dice.red{color:#923d32;transform:rotate(8deg)}.dice-label{font:8px var(--mono);letter-spacing:.14em;color:#879184}
+@keyframes diceRoll{0%{transform:rotate(0) translateY(0)}30%{transform:rotate(160deg) translateY(-16px)}65%{transform:rotate(330deg) translateY(3px)}100%{transform:rotate(360deg) translateY(0)}}
+.dealer-line{width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:18px;color:#8d9b82;font:8px var(--mono);letter-spacing:.17em}.dealer-line:before,.dealer-line:after{content:"";height:1px;background:linear-gradient(90deg,transparent,#c4ad7860)}.dealer-line:after{transform:scaleX(-1)}.dealer-line span{color:#d4bf8b}
+.play-area{width:100%;flex:1;min-height:190px;display:grid;grid-template-columns:1fr minmax(170px,.7fr) 1fr;align-items:center;gap:14px;position:relative}
+.hand{display:flex;justify-content:center;align-items:center;min-height:148px;position:relative}.hand-label{position:absolute;bottom:-7px;font:8px var(--mono);letter-spacing:.14em;color:#a4a990}
+.cards{display:flex;justify-content:center;align-items:center;min-height:112px;position:relative}.playing-card{width:clamp(48px,5.6vw,73px);height:clamp(74px,8vw,106px);border-radius:6px;border:1px solid #c8b993;background:linear-gradient(145deg,#efe7d4,#ddd1b4);color:#25231f;box-shadow:0 7px 12px #00150f8a;position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;margin-left:-10px;transition:transform .25s,box-shadow .25s;flex:none}.playing-card:first-child{margin-left:0}.playing-card.red{color:#983c32}.playing-card .rank{position:absolute;left:6px;top:5px;font:700 13px var(--display);line-height:.9}.playing-card .rank small{font:11px var(--sans)}.playing-card .suit{font-size:26px;line-height:1}.playing-card .center-rank{font:18px var(--display);opacity:.4;margin-top:2px}.playing-card.back{background-color:#692b27;background-image:repeating-linear-gradient(45deg,transparent 0 6px,#e3c58b45 6px 7px),repeating-linear-gradient(-45deg,transparent 0 6px,#e3c58b45 6px 7px);border:1px solid #d4ba83;box-shadow:inset 0 0 0 4px #642a27,inset 0 0 0 5px #c1a471,0 7px 12px #00150f8a}.playing-card.selectable{cursor:pointer}.playing-card.selectable:hover{transform:translateY(-8px);box-shadow:0 14px 18px #00150f9b}.playing-card.selected{transform:translateY(-15px);outline:2px solid #e0bf77;box-shadow:0 0 18px #e0bf7755}.playing-card.selected::after{content:none!important;display:none!important}.opponent-cards .playing-card{width:clamp(38px,4.4vw,56px);height:clamp(62px,6.6vw,84px);margin-left:-14px}
+@keyframes deal{from{opacity:0;transform:translateY(40px) rotate(10deg)}to{opacity:1;transform:translateY(0) rotate(var(--rot,0deg))}}
+.playing-card.dealt-initial{animation:deal .45s both}
+.playing-card.reveal-card{animation:cardReveal .55s cubic-bezier(.2,.75,.25,1) both;transform-origin:center}
+@keyframes cardReveal{0%{opacity:.35;transform:rotateY(88deg) translateY(-12px) scale(.94)}65%{transform:rotateY(-8deg) translateY(2px)}100%{opacity:1;transform:rotateY(0) translateY(0)}}
+.center-pot{text-align:center;position:relative;z-index:1}.pot-ring{width:112px;height:112px;margin:auto;border:1px solid #c7ac7066;border-radius:50%;display:grid;place-items:center;position:relative;background:radial-gradient(circle,#18382d 48%,#c3a76b12 49%,transparent 68%);box-shadow:0 0 25px #051d1799,inset 0 0 20px #c1a66c0b}.pot-ring:before,.pot-ring:after{content:"";position:absolute;border:1px dashed #c3a76b42;border-radius:50%;inset:8px}.pot-ring:after{inset:16px;border-style:solid;opacity:.4}.pot-value{font:400 27px var(--display);color:#f0d9a3}.pot-caption{display:block;font:8px var(--mono);letter-spacing:.2em;color:#a89d7a;margin-top:3px}.pot-token{position:absolute;width:29px;height:29px;border-radius:50%;background:radial-gradient(circle at 32% 28%,#f4dda0,#ad8b4d 62%,#604b2d 75%,#d3b872 77%,#76603a 86%);border:1px solid #e3cd92;box-shadow:0 3px 4px #0009}.pot-token:after{content:"";position:absolute;inset:4px;border:1px dashed #6c542d;border-radius:50%}.token-a{left:12px;top:16px;transform:rotate(-19deg)}.token-b{right:14px;top:24px;transform:rotate(14deg)}.token-c{bottom:12px;left:25px;transform:rotate(30deg)}
+.status-line{min-height:23px;margin:1px 0 7px;text-align:center;font:10px var(--mono);letter-spacing:.1em;color:#dcc898}.status-line .dim{color:#95a08b}
+.action-dock{width:min(100%,820px);min-height:80px;border-top:1px solid #c4ad7837;display:flex;align-items:center;justify-content:center;gap:9px;padding:13px 0 4px;position:relative;z-index:2}.action-btn{background:#191a16;border:1px solid #68725c;color:#d8d4c2;font:10px var(--mono);letter-spacing:.08em;padding:12px 17px;min-width:92px;transition:.2s}.action-btn:hover:not(:disabled){border-color:#d9c18b;background:#27362d;transform:translateY(-2px)}.action-btn:disabled{opacity:.3;cursor:not-allowed}.action-btn.gold-btn{background:#b69a65;border-color:#e2cd9b;color:#211c13;font-weight:500}.action-btn.gold-btn:hover:not(:disabled){background:#dec590}.action-btn.danger{border-color:#8d4c43;color:#dcaca0}.action-btn.danger:hover:not(:disabled){background:#422521;border-color:#d17663}.action-btn.loan{border-color:#a9824c;color:#e2c584;background:#302619}.action-btn .sub{display:block;font-size:8px;color:inherit;opacity:.72;margin-top:4px}
+.round-tag{display:inline-block;border:1px solid #b89d6745;padding:5px 8px;color:#c8b780;font:8px var(--mono);letter-spacing:.16em;margin-bottom:5px}
+.archive-ribbon{position:absolute;right:0;top:50%;transform:translateY(-50%);font:8px var(--mono);letter-spacing:.12em;color:#9e997d;writing-mode:vertical-rl;border-right:1px solid #bb9b5d55;padding:10px 8px}
+/* Result scenes */
+#result{position:fixed;inset:0;z-index:10;display:grid;place-items:center;text-align:center;overflow:hidden;background:#080909}
+#result.win{background:radial-gradient(ellipse at 50% 45%,#422a1e,#100f0d 62%)}#result.loss{background:radial-gradient(ellipse at 50% 60%,#1a1919,#050606 69%)}
+.result-content{position:relative;z-index:2;width:min(560px,90vw);padding:30px}.result-mark{width:84px;height:84px;border:1px solid #b6985c;border-radius:50%;margin:0 auto 25px;display:grid;place-items:center;color:#dbbf7c;font:29px var(--display);box-shadow:inset 0 0 0 5px #1111,inset 0 0 0 6px #b6985c55,0 0 50px #d3b06516}.loss .result-mark{border-color:#777;color:#b3ada0;box-shadow:inset 0 0 0 5px #1111,inset 0 0 0 6px #7775}
+.result-content h2{font:400 clamp(38px,6vw,62px)/1.1 var(--display);margin:0 0 13px;letter-spacing:-.04em}.result-content p{font:13px/1.9 var(--display);color:#aba18f;margin:0 auto 24px}.result-meta{font:9px var(--mono);letter-spacing:.12em;color:#8f866f;margin-bottom:28px}.result-actions{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}.result-actions .primary-btn{min-width:180px}
+.departing-soul{position:absolute;left:50%;bottom:-14%;width:100px;height:220px;transform:translateX(-50%);opacity:0;filter:blur(1px);background:linear-gradient(180deg,#d8d1bd99,#d8d1bd30 52%,transparent);clip-path:polygon(31% 0,69% 0,80% 21%,100% 51%,73% 69%,83% 100%,17% 100%,28% 69%,0 51%,20% 21%);animation:soulRise 5s .3s ease-out both}
+.fallen-body{position:absolute;bottom:-8%;left:50%;width:125px;height:205px;transform:translateX(-50%);border-radius:50% 50% 4px 4px;background:linear-gradient(90deg,#101112,#3d3b35,#111213);filter:blur(3px);opacity:.65;animation:bodyDrop 3.5s ease-in both}
+@keyframes soulRise{0%{opacity:0;bottom:8%;transform:translateX(-50%) scale(.85)}20%{opacity:.8}100%{opacity:0;bottom:112%;transform:translateX(-50%) scale(1.35)}}@keyframes bodyDrop{0%{bottom:14%;opacity:0}35%{opacity:.7}100%{bottom:-20%;opacity:.35}}
+.loss-copy{opacity:0;animation:fadeUp 1.8s 2s both}.loss-copy h2{font-size:56px;letter-spacing:.06em}.loss-copy .primary-btn{margin-top:2px}
+/* Dialog */
+.modal-scrim{position:fixed;inset:0;background:#030403c9;backdrop-filter:blur(6px);display:grid;place-items:center;z-index:30;padding:18px}.modal{width:min(620px,100%);max-height:85vh;overflow:auto;background:#1c1b17;border:1px solid #8c734c;padding:33px clamp(22px,5vw,44px);box-shadow:0 25px 80px #000}.modal h2{font:400 31px var(--display);margin:8px 0 20px}.modal h3{font:400 17px var(--display);color:#ddc68d;margin:19px 0 6px}.modal p,.modal li{font:12px/1.85 var(--display);color:#b7ac97}.modal ul{padding-left:19px}.modal-head{display:flex;justify-content:space-between;align-items:flex-start}.close-btn{background:none;border:1px solid #62563e;color:#c7b78f;width:32px;height:32px;font-size:17px}
+@media(max-width:850px){.lobby-wrap{grid-template-columns:1fr;padding-top:133px;gap:0}.hero-copy{margin-left:4vw}.table-art{position:absolute;right:-15vw;top:13vh;width:73vw;height:61vh;opacity:.62;pointer-events:none}.hero-copy{z-index:1}.hero-desc{max-width:310px}.lobby-foot{z-index:1}.casino-table{border-radius:28px;min-height:calc(100vh - 100px);padding:18px 4%}.casino-table:before{border-radius:22px}.play-area{grid-template-columns:1fr .7fr 1fr;gap:4px}.opponent-zone,.player-zone{grid-template-columns:1fr auto 1fr;gap:5px;min-height:139px}.identity{gap:8px}.portrait{width:48px;height:48px}.id-copy strong{font-size:15px}.stack{min-width:55px;font-size:8px}.stack:before{width:21px;height:21px;margin-bottom:6px}.stack b{font-size:15px}.pot-ring{width:90px;height:90px}.playing-card{margin-left:-17px}.opponent-cards .playing-card{margin-left:-17px}.action-btn{min-width:76px;padding:11px 10px}.archive-ribbon{display:none}}
+@media(max-width:560px){.lobby-top{padding:19px 5vw}.lobby-tools{gap:6px}.quiet-btn{padding:9px 10px;font-size:9px}.lobby-wrap{padding:126px 6vw 66px;align-items:center}.hero-copy{margin:10vh 0 0}.hero-copy h1{font-size:63px}.hero-desc{font-size:13px;margin:23px 0 26px;max-width:290px}.table-art{right:-45vw;top:15vh;width:110vw;height:62vh;opacity:.48}.token-one{left:3%;bottom:15%}.lobby-foot{left:6vw;font-size:8px}.archive-peek{font-size:8px}.contract-paper{padding-top:37px;padding-bottom:32px}.contract-paper h2{font-size:29px}.contract-paper .contract-copy{font-size:12px}.sign-row{grid-template-columns:1fr;gap:11px}.contract-actions{gap:10px}.contract-actions .primary-btn{min-width:140px}
+#game{padding:14px 10px 18px}.game-head{margin:0 6px 10px}.head-stats{gap:10px}.stat{font-size:8px}.stat b{margin-left:3px}.game-brand strong{font-size:9px}.game-brand small{font-size:7px}.sound-btn{width:31px;height:30px}.casino-table{min-height:calc(100dvh - 76px);padding:12px 9px}.casino-table:before{inset:11px}.opponent-zone{min-height:116px}.player-zone{min-height:124px}.id-copy .eyebrow{font-size:7px}.id-copy strong{font-size:13px}.id-copy small{font-size:7px}.portrait{width:41px;height:41px}.portrait:before{left:11px;right:11px}.portrait:after{left:5px;right:5px}.stack b{font-size:14px}.stack{min-width:45px}.dice-area{gap:7px}.dice{width:31px;height:31px;font-size:16px}.dice-label{font-size:7px}.dealer-line{gap:9px;font-size:7px}.play-area{grid-template-columns:1fr 88px 1fr;min-height:148px}.hand{min-height:100px}.cards{min-height:85px}.playing-card{width:48px;height:72px;margin-left:-19px}.playing-card .rank{font-size:11px;left:4px;top:4px}.playing-card .rank small{font-size:9px}.playing-card .suit{font-size:21px}.opponent-cards .playing-card{width:38px;height:60px;margin-left:-14px}.center-pot{transform:scale(.86)}.pot-ring{width:82px;height:82px}.status-line{font-size:8px;letter-spacing:.04em;max-width:98%;line-height:1.6}.action-dock{gap:5px;flex-wrap:wrap;padding-top:10px}.action-btn{min-width:0;flex:1;padding:10px 6px;font-size:8px}.action-btn .sub{font-size:7px}.round-tag{font-size:7px;padding:4px}.result-content p{font-size:12px}.result-content h2{font-size:39px}.loss-copy h2{font-size:48px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important}}
+/* Readable, single-screen table and tactile details */
+html,body{height:100%;overflow:hidden}
+.screen{height:100svh;min-height:100svh}
+#lobby{height:100svh}
+.hero-desc{font-size:17px;line-height:1.95}
+.eyebrow{font-size:11px}
+.quiet-btn{font-size:12px;padding:11px 16px}
+.archive-peek{font-size:11px}
+.lobby-foot{font-size:10px}
+#arrival .arrival-copy h2{font-size:36px}
+#arrival .arrival-copy p{font-size:12px}
+.contract-paper .contract-copy{font-size:15px;line-height:2}
+.sign-label{font-size:12px}
+.contract-actions small{font-size:10px}
+.modal p,.modal li{font-size:14px;line-height:1.9}
+#game{height:100svh;height:100dvh;min-height:0;padding:14px 3vw 14px;display:flex;flex-direction:column;overflow:hidden}
+.game-head{flex:0 0 auto;margin-bottom:10px}
+.game-brand strong{font-size:12px}
+.game-brand small{font-size:9px}
+.stat{font-size:11px}
+.sound-btn{width:40px;height:38px;font-size:16px}
+.casino-table{flex:1 1 auto;height:0;min-height:0;padding:16px 4% 13px;border-radius:34px}
+.casino-table:before{border-radius:27px;inset:10px}
+.table-inner{min-height:0;height:100%;justify-content:space-between}
+.opponent-zone,.player-zone{min-height:clamp(92px,13vh,138px);gap:18px}
+.identity{gap:15px}
+.portrait{width:68px;height:68px}
+.id-copy .eyebrow{font-size:10px}
+.id-copy strong{font-size:22px}
+.id-copy small{font-size:11px}
+.stack{font-size:11px;min-width:95px}
+.stack:before{display:none}
+.stack b{font-size:22px;margin-bottom:5px}
+.chip-stack{height:40px;width:42px;position:relative;display:block;margin:0 auto 4px}
+.stack.right .chip-stack{margin-left:0}
+.chip-stack i{position:absolute;left:7px;bottom:calc(var(--i)*4px);display:block;width:28px;height:11px;border-radius:50%;border:1px solid #f0d89b;background:linear-gradient(90deg,#876639 0 12%,#d9bd75 13% 20%,#a47f43 21% 79%,#ead292 80% 87%,#795a31 88%);box-shadow:0 2px 1px #17120b;animation:chipStackIn .28s both;animation-delay:calc(var(--i)*.035s)}
+@keyframes chipStackIn{from{opacity:0;transform:translateY(15px) rotateX(55deg)}to{opacity:1;transform:translateY(0) rotateX(0)}}
+.dice-area{gap:12px}
+.dice-label{font-size:10px;letter-spacing:.1em}
+.dice{position:relative;width:52px;height:52px;padding:8px;display:grid;grid-template:repeat(3,1fr)/repeat(3,1fr);gap:1px;border-radius:10px;background:linear-gradient(145deg,#fffdf5 0%,#eae2d2 48%,#c8bdab 100%);border:1px solid #fffaf0;box-shadow:1px 2px 1px #7d7569,3px 6px 0 -2px #7a725f,4px 9px 12px #06120fd1,inset 0 1px 2px white;transform:perspective(260px) rotateX(8deg) rotateZ(-7deg);font-size:0;color:transparent}
+.dice:before{content:"";position:absolute;inset:3px;border-radius:7px;border:1px solid #b8ad9a55;pointer-events:none}
+.dice .pip{width:7px;height:7px;align-self:center;justify-self:center;border-radius:50%;opacity:0;background:radial-gradient(circle at 32% 27%,#6b665f,#252320 62%,#12110f);box-shadow:inset 0 1px 1px #0009,0 1px 0 #fff9}
+.dice.red .pip{background:radial-gradient(circle at 32% 27%,#bc5143,#69231f 62%,#351311)}
+.dice[data-value="1"] .pip:nth-child(5),
+.dice[data-value="2"] .pip:nth-child(1),.dice[data-value="2"] .pip:nth-child(9),
+.dice[data-value="3"] .pip:nth-child(1),.dice[data-value="3"] .pip:nth-child(5),.dice[data-value="3"] .pip:nth-child(9),
+.dice[data-value="4"] .pip:nth-child(1),.dice[data-value="4"] .pip:nth-child(3),.dice[data-value="4"] .pip:nth-child(7),.dice[data-value="4"] .pip:nth-child(9),
+.dice[data-value="5"] .pip:nth-child(1),.dice[data-value="5"] .pip:nth-child(3),.dice[data-value="5"] .pip:nth-child(5),.dice[data-value="5"] .pip:nth-child(7),.dice[data-value="5"] .pip:nth-child(9),
+.dice[data-value="6"] .pip:nth-child(1),.dice[data-value="6"] .pip:nth-child(3),.dice[data-value="6"] .pip:nth-child(4),.dice[data-value="6"] .pip:nth-child(6),.dice[data-value="6"] .pip:nth-child(7),.dice[data-value="6"] .pip:nth-child(9){opacity:1}
+.dice.rolling{animation:realDiceRoll .72s cubic-bezier(.2,.75,.25,1)}
+@keyframes realDiceRoll{0%{transform:perspective(260px) rotateX(8deg) rotateZ(-7deg) translateY(0)}24%{transform:perspective(260px) rotateX(48deg) rotateZ(150deg) translateY(-16px)}52%{transform:perspective(260px) rotateX(-18deg) rotateZ(280deg) translateY(3px)}78%{transform:perspective(260px) rotateX(14deg) rotateZ(390deg) translateY(-4px)}100%{transform:perspective(260px) rotateX(8deg) rotateZ(353deg) translateY(0)}}
+.dealer-line{font-size:10px}
+.play-area{min-height:clamp(142px,24vh,220px);gap:12px}
+.playing-card{width:clamp(58px,5.4vw,78px);height:clamp(84px,8.3vw,112px);margin-left:-8px}
+.playing-card .rank{font-size:16px;left:7px;top:6px}
+.playing-card .rank small{font-size:12px}
+.playing-card .suit{font-size:31px}
+.playing-card .center-rank{font-size:22px}
+.opponent-cards .playing-card{width:clamp(45px,4.2vw,60px);height:clamp(68px,6.7vw,90px);margin-left:-12px}
+.hand-label{font-size:11px}
+.pot-ring{width:124px;height:124px}
+.pot-value{font-size:31px}
+.pot-caption{font-size:10px}
+.status-line{font-size:13px;min-height:28px;letter-spacing:.06em}
+.action-dock{min-height:88px;padding:11px 0 3px;gap:11px}
+.action-btn{font-size:12px;min-width:104px;min-height:48px;padding:12px 16px;letter-spacing:.05em}
+.action-btn .sub{font-size:10px}
+.round-tag{font-size:10px}
+.result-content p{font-size:15px}
+.result-meta{font-size:12px}
+.result-actions .primary-btn,.result-actions .text-btn{font-size:13px}
+.contract-paper h2{font-size:38px}
+.contract-paper .eyebrow{font-size:11px}
+.hero-copy .eyebrow{font-size:11px}
+.title-en{font-size:17px}
+.text-btn{font-size:12px}
+.round-tag{padding:6px 10px}
+.action-btn{font-weight:600}
+.chip-flight{position:absolute;z-index:5;left:calc(50% - 14px);top:54%;width:28px;height:28px;border:2px solid #f2dfa7;border-radius:50%;opacity:0;pointer-events:none;background:radial-gradient(circle at 32% 28%,#f7e2a0,#bd9a51 59%,#69502c 72%,#e0c581 75%,#765b31 86%);box-shadow:0 8px 12px #0008}
+.chip-flight:after{content:"L";position:absolute;inset:4px;border:1px dashed #71542a;border-radius:50%;display:grid;place-items:center;color:#634b25;font:12px var(--display)}
+.antes-moving .chip-flight.left{animation:anteLeft .72s cubic-bezier(.25,.8,.25,1) both}
+.antes-moving .chip-flight.right{animation:anteRight .72s cubic-bezier(.25,.8,.25,1) both}
+@keyframes anteLeft{0%{opacity:0;left:24%;top:55%;transform:scale(.7) rotate(-25deg)}12%{opacity:1}68%{opacity:1}100%{opacity:0;left:calc(50% - 14px);top:50%;transform:scale(.55) rotate(320deg)}}
+@keyframes anteRight{0%{opacity:0;left:76%;top:55%;transform:scale(.7) rotate(25deg)}12%{opacity:1}68%{opacity:1}100%{opacity:0;left:calc(50% - 14px);top:50%;transform:scale(.55) rotate(-320deg)}}
+.playing-card:nth-child(1){animation-delay:.03s}.playing-card:nth-child(2){animation-delay:.12s}.playing-card:nth-child(3){animation-delay:.21s}.playing-card:nth-child(4){animation-delay:.30s}.playing-card:nth-child(5){animation-delay:.39s}
+@media(max-height:720px){#game{padding-top:8px;padding-bottom:8px}.game-head{margin-bottom:6px}.casino-table{padding-top:8px;padding-bottom:8px}.opponent-zone,.player-zone{min-height:78px}.play-area{min-height:118px}.action-dock{min-height:72px;padding-top:5px}.action-btn{min-height:43px;padding:9px 12px}.chip-stack{height:33px}.chip-stack i{height:9px;bottom:calc(var(--i)*3.5px)}.pot-ring{width:92px;height:92px}.playing-card{height:78px;width:54px}.opponent-cards .playing-card{height:62px;width:42px}.status-line{min-height:21px;font-size:12px}}
+@media(max-width:760px){.opponent-zone,.player-zone{gap:7px}.identity{gap:8px}.portrait{width:48px;height:48px}.id-copy strong{font-size:17px}.id-copy small{font-size:10px}.stack{min-width:58px;font-size:10px}.stack b{font-size:18px}.chip-stack{transform:scale(.88);transform-origin:center bottom}.dice{width:44px;height:44px;padding:7px}.dice .pip{width:6px;height:6px}.dice-label{font-size:10px}.dice-area{gap:7px}.play-area{grid-template-columns:1fr 104px 1fr;gap:3px}.pot-ring{width:94px;height:94px}.pot-value{font-size:26px}.playing-card{width:clamp(44px,12vw,61px);height:clamp(68px,18vw,84px);margin-left:-18px}.opponent-cards .playing-card{width:clamp(35px,9.5vw,45px);height:clamp(56px,15vw,66px);margin-left:-15px}.playing-card .suit{font-size:24px}.playing-card .rank{font-size:13px;left:4px;top:4px}.playing-card .rank small{font-size:10px}.playing-card .center-rank{font-size:18px}.action-dock{gap:6px;min-height:82px}.action-btn{min-width:0;flex:1;padding:9px 8px;font-size:11px}.action-btn .sub{font-size:9px}.status-line{font-size:12px}.dealer-line{font-size:9px}.game-brand strong{font-size:10px}.game-brand small{font-size:8px}.head-stats{gap:9px}.stat{font-size:10px}}
+@media(max-width:420px){#game{padding-left:6px;padding-right:6px}.casino-table{padding-left:7px;padding-right:7px}.opponent-zone,.player-zone{grid-template-columns:minmax(50px,.7fr) auto minmax(64px,.9fr)}.identity .portrait{display:none}.identity.player{gap:0}.stack{min-width:48px}.play-area{grid-template-columns:1fr 82px 1fr}.pot-ring{width:78px;height:78px}.playing-card{margin-left:-20px}.opponent-cards .playing-card{margin-left:-15px}.action-btn{font-size:10px}.hero-copy{margin-top:7vh}.hero-copy h1{font-size:58px}.hero-desc{font-size:15px}}
+@media(prefers-reduced-motion:reduce){.chip-flight,.chip-stack i{animation:none!important}}
+.casino-table.table-enter{animation:tableEnter .9s cubic-bezier(.16,.72,.27,1) both}
+@keyframes tableEnter{from{opacity:0;transform:translateY(24px) scale(.965);filter:brightness(.55)}to{opacity:1;transform:translateY(0) scale(1);filter:brightness(1)}}
+#result.win:before,#result.loss:before{content:"";position:absolute;inset:-10%;pointer-events:none}
+#result.win:before{background:radial-gradient(ellipse at 50% 45%,#d5aa5c20,transparent 45%);animation:houseGlow 3s ease-in-out infinite alternate}
+#result.loss:before{background:radial-gradient(ellipse at 50% 80%,#d4d0c417,transparent 45%);animation:fadeOutRoom 4s ease both}
+@keyframes houseGlow{from{opacity:.3;transform:scale(.9)}to{opacity:1;transform:scale(1.12)}}
+@keyframes fadeOutRoom{from{opacity:.8}to{opacity:.12}}
+#result.win .result-content{animation:fadeUp .75s .45s both}
+#result.win .departing-soul{width:122px;height:265px;filter:drop-shadow(0 0 22px #e3d5bb4a);background:linear-gradient(180deg,#e6ddc9aa,#e6ddc940 52%,transparent)}
+#result.loss .departing-soul{background:linear-gradient(180deg,#dbd8cfb5,#b7b4ac31 52%,transparent);filter:drop-shadow(0 0 14px #e4e1d832)}
+#result.loss .fallen-body{filter:blur(2px);opacity:.8}
+.reward-coins{position:absolute;inset:0;z-index:1;pointer-events:none}
+.reward-coins i{position:absolute;left:50%;top:55%;width:29px;height:29px;border-radius:50%;border:2px solid #f0d99a;background:radial-gradient(circle at 32% 28%,#fff0b7,#c5a253 57%,#6f5229 73%,#ead28d 76%,#745731 86%);box-shadow:0 5px 16px #0009;opacity:0;animation:coinGather 1.1s cubic-bezier(.2,.7,.25,1) both}
+.reward-coins i:nth-child(1){--dx:-250px;--dy:190px;animation-delay:.04s}.reward-coins i:nth-child(2){--dx:220px;--dy:145px;animation-delay:.16s}.reward-coins i:nth-child(3){--dx:-170px;--dy:-130px;animation-delay:.28s}.reward-coins i:nth-child(4){--dx:155px;--dy:-105px;animation-delay:.4s}.reward-coins i:nth-child(5){--dx:5px;--dy:215px;animation-delay:.52s}
+@keyframes coinGather{0%{opacity:0;transform:translate(-50%,-50%) scale(.3) rotate(0)}18%{opacity:1}100%{opacity:0;transform:translate(calc(-50% + var(--dx)),calc(-50% + var(--dy))) scale(.7) rotate(540deg)}}
+#result.hand-result{background:#080b09d9;backdrop-filter:blur(7px)}
+.hand-result .result-content{border:1px solid #b89b625c;background:linear-gradient(145deg,#191b17f5,#0d100ef5);box-shadow:0 20px 70px #000b;padding:38px 30px}
+.hand-result .result-mark{width:64px;height:64px;font-size:23px;margin-bottom:18px}
+.hand-result .result-content h2{font-size:clamp(32px,4.2vw,48px)}
+.hand-result .result-content p{font-size:15px}
+.casino-table.check-pulse{animation:feltPulse .36s ease-out}
+@keyframes feltPulse{0%,100%{filter:brightness(1)}45%{filter:brightness(1.16);box-shadow:inset 0 0 0 9px #38271b,inset 0 0 0 11px #d7bd7e88,inset 0 0 105px #071b16,0 20px 45px #0008}}
+.wager-moving.wager-player .chip-flight.left{animation:anteLeft .62s cubic-bezier(.25,.8,.25,1) both}
+.wager-moving.wager-ai .chip-flight.right{animation:anteRight .62s cubic-bezier(.25,.8,.25,1) both}
+.playing-card.discarding{animation:cardDiscard .42s cubic-bezier(.4,0,.8,.3) both}
+@keyframes cardDiscard{to{opacity:0;transform:translateY(95px) rotate(13deg) scale(.8)}}
+.opponent-cards.trading .playing-card{animation:backTrade .5s ease both}
+@keyframes backTrade{0%{transform:translateY(0) rotate(0)}50%{transform:translateY(-13px) rotate(3deg)}100%{transform:translateY(0) rotate(0)}}
+.modal ol{padding-left:22px}.modal ol li{padding-left:2px;margin:5px 0}
+.round-progress{width:min(920px,94%);margin:-2px auto 11px;display:grid;grid-template-columns:repeat(6,1fr);position:relative;color:#827963;font:10px var(--mono);letter-spacing:.04em}
+.round-progress:before{content:"";position:absolute;left:7%;right:7%;top:7px;height:1px;background:linear-gradient(90deg,#88724a55,#88724a99,#88724a55)}
+.progress-step{position:relative;text-align:center;padding-top:17px;transition:color .35s ease}
+.progress-step:before{content:"";position:absolute;left:50%;top:3px;width:8px;height:8px;transform:translateX(-50%);border-radius:50%;border:1px solid #9d875a;background:#182c24;box-shadow:0 0 0 3px #11110f}
+.progress-step.active{color:#f0d69b}.progress-step.active:before{background:#e8cb82;box-shadow:0 0 0 3px #11110f,0 0 14px #e8cb82aa}.progress-step.past{color:#c2a967}.progress-step.past:before{background:#ac925b}
+.table-callout{position:absolute;z-index:6;left:50%;top:44%;transform:translate(-50%,-50%) scale(.72);opacity:0;pointer-events:none;white-space:nowrap;color:#f4dda5;font:500 clamp(17px,2.2vw,27px) var(--mono);letter-spacing:.2em;text-shadow:0 3px 22px #000,0 0 18px #e1bd68aa}
+.table-callout.show{animation:calloutRise 1.25s cubic-bezier(.2,.75,.2,1) both}
+.table-callout.danger{color:#ffd8cf;text-shadow:0 3px 22px #000,0 0 24px #b74637}
+@keyframes calloutRise{0%{opacity:0;transform:translate(-50%,-20%) scale(.72);filter:blur(5px)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.08);filter:blur(0)}36%{transform:translate(-50%,-50%) scale(1)}78%{opacity:1}100%{opacity:0;transform:translate(-50%,-72%) scale(.98)}}
+.casino-table.high-stakes{animation:highStakes .95s ease-out}
+@keyframes highStakes{0%,100%{filter:brightness(1)}25%{filter:brightness(1.24);box-shadow:inset 0 0 0 9px #38271b,inset 0 0 0 12px #e7c879,inset 0 0 120px #601b16,0 20px 50px #000b}}
+.playing-card{transform-style:preserve-3d;backface-visibility:hidden}
+.playing-card.reveal-card{animation:cardReveal .72s cubic-bezier(.16,.75,.26,1) both}
+.opponent-cards .reveal-card:nth-child(1){animation-delay:.08s}.opponent-cards .reveal-card:nth-child(2){animation-delay:.26s}.opponent-cards .reveal-card:nth-child(3){animation-delay:.44s}.opponent-cards .reveal-card:nth-child(4){animation-delay:.62s}.opponent-cards .reveal-card:nth-child(5){animation-delay:.8s}
+@keyframes cardReveal{0%{opacity:.3;transform:rotateY(88deg) translateY(-8px)}70%{transform:rotateY(-8deg) translateY(-3px)}100%{opacity:1;transform:rotateY(0) translateY(0)}}
+.playing-card.dealt-new{animation:cardArrive .72s cubic-bezier(.18,.8,.2,1) both}
+@keyframes cardArrive{0%{opacity:0;transform:translateY(-45px) rotate(-8deg) scale(.78);filter:blur(2px)}65%{opacity:1;transform:translateY(5px) rotate(2deg) scale(1.04);filter:blur(0)}100%{transform:translateY(0) rotate(0) scale(1)}}
+.tutorial-scrim{position:fixed;inset:0;z-index:40;display:grid;place-items:center;padding:20px;background:radial-gradient(ellipse at 50% 44%,#24362ed9,#080908f2 75%);backdrop-filter:blur(9px);animation:fadeUp .6s ease both}
+.tutorial-card{width:min(620px,100%);min-height:360px;padding:clamp(28px,6vw,54px);position:relative;text-align:center;border:1px solid #a88c58;background:linear-gradient(145deg,#211f19f5,#10120ff5);box-shadow:0 28px 100px #000c,inset 0 0 0 7px #181812;display:flex;flex-direction:column;align-items:center;justify-content:center;animation:paperLand .7s cubic-bezier(.2,.8,.2,1) both}
+.tutorial-card:before{content:"";position:absolute;inset:12px;border:1px solid #b69a5b38;pointer-events:none}
+.tutorial-kicker{font:11px var(--mono);letter-spacing:.24em;color:var(--gold)}.tutorial-icon{width:70px;height:70px;margin:19px 0 8px;display:grid;place-items:center;border:1px solid #ad915d;border-radius:50%;color:#e6ca8d;font:29px var(--display);box-shadow:inset 0 0 0 5px #131410,0 0 35px #d5b66c20}
+.tutorial-card h2{margin:8px 0 10px;font:400 clamp(27px,5vw,38px) var(--display);color:#efe5d1}.tutorial-card p{max-width:440px;margin:0;color:#bbb19d;font:15px/1.9 var(--display)}
+.tutorial-foot{display:flex;align-items:center;justify-content:space-between;gap:20px;width:100%;margin-top:30px}.tutorial-count{font:11px var(--mono);color:#9b8c70;letter-spacing:.12em}.tutorial-dots{display:flex;gap:7px}.tutorial-dots i{width:7px;height:7px;border-radius:50%;background:#665b46}.tutorial-dots i.active{background:#e1c581;box-shadow:0 0 10px #e1c58188}
+.tutorial-next{min-width:150px}.tutorial-next:disabled{opacity:.55;cursor:default;transform:none}
+@media(max-width:560px){.round-progress{width:100%;margin:-2px auto 7px;grid-template-columns:repeat(6,minmax(0,1fr));font-size:9px;letter-spacing:0}.round-progress:before{left:7%;right:7%}.progress-step{padding-top:16px;white-space:nowrap}.tutorial-card{min-height:340px;padding:30px 23px}.tutorial-card p{font-size:15px}.tutorial-foot{margin-top:23px}.table-callout{top:46%}}
+@media(max-width:390px){.progress-step{font-size:0}.progress-step.active{font-size:9px}.progress-step:before{width:7px;height:7px}}
+@media(prefers-reduced-motion:reduce){.table-callout.show,.playing-card.dealt-new{animation-duration:.01ms!important}}
+.action-dock{flex-wrap:wrap;align-content:center;gap:8px}
+.action-row{display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap}
+.bet-sizing{display:flex;align-items:center;justify-content:center;gap:8px;min-height:50px;padding:4px 8px;border:1px solid #b89b6255;background:#121511;color:#e0c98e}
+.bet-size-label{font:11px var(--mono);letter-spacing:.08em;white-space:nowrap}
+.bet-sizing input[type=range]{width:clamp(96px,12vw,150px);accent-color:#d2b877;cursor:pointer}
+.bet-sizing output{min-width:48px;text-align:center;color:#f0dda9;font:12px var(--mono);white-space:nowrap}
+.bet-sizing .size-go{min-width:78px;min-height:42px;padding:8px 11px}
+@media(max-width:850px){.bet-sizing{gap:5px;padding:3px 6px}.bet-sizing input[type=range]{width:96px}.bet-size-label{font-size:10px}.bet-sizing output{font-size:11px;min-width:40px}}
+@media(max-width:760px){.action-dock{min-height:118px;gap:5px}.action-row{width:100%;gap:6px}.bet-sizing{width:min(100%,390px);min-height:46px}.bet-sizing input[type=range]{width:clamp(76px,20vw,120px)}}
+@media(max-height:720px){.action-dock{min-height:88px;gap:4px}.action-row{gap:5px}.bet-sizing{min-height:36px;padding:2px 5px}.bet-sizing input[type=range]{width:88px}.bet-sizing output{font-size:10px}.bet-sizing .size-go{min-height:34px;padding:5px 9px}.action-row .action-btn{min-height:38px;padding:6px 9px}.action-row .action-btn .sub{font-size:9px;margin-top:2px}}
+
+/* Applied interaction polish: exact pot chips, clean selection, targeted card dealing */
+.pot-chip-field{position:absolute;inset:12px 7px 9px;z-index:1;display:grid;grid-template-columns:repeat(5,18px);grid-auto-rows:7px;gap:0;justify-content:center;align-content:center;pointer-events:none;overflow:hidden;}
+.pot-chip{display:block;position:relative;width:20px;height:10px;margin-left:-1px;border-radius:50%;border:1px solid #f0d99a;background:linear-gradient(180deg,#fff0ba 0 15%,#c7a354 16% 68%,#76542b 69% 84%,#e4c983 85%);box-shadow:0 2px 4px #0009,inset 0 1px 1px #fff9;animation:potChipIn .18s ease-out both;}
+.pot-chip:nth-child(5n+2),.pot-chip:nth-child(5n+4){transform:translateY(1px) rotate(4deg)}
+.pot-total{position:relative;z-index:3;display:grid;justify-items:center;align-content:center;min-width:67px;min-height:52px;padding:3px 6px;border:1px solid #c9ad7070;border-radius:50%;background:rgba(10,28,22,.86);box-shadow:0 2px 12px #0007;text-shadow:0 2px 7px #000;}
+.pot-value{font-size:27px;line-height:1.1}
+.pot-caption{font-size:7px;letter-spacing:.12em}
+@keyframes potChipIn{from{opacity:0;transform:translateY(-7px) scale(.72)}to{opacity:1;transform:translateY(0) scale(1)}}
+@media(max-width:760px){.pot-chip-field{grid-template-columns:repeat(4,15px);grid-auto-rows:6px;inset:9px 4px 8px}.pot-chip{width:17px;height:9px}.pot-total{min-width:62px;min-height:47px}.pot-value{font-size:24px}}
+@media(max-width:420px){.pot-chip-field{grid-template-columns:repeat(3,14px);grid-auto-rows:6px;inset:7px 2px 7px}.pot-chip{width:16px;height:8px}.pot-total{min-width:55px;min-height:43px}.pot-value{font-size:21px}.pot-caption{font-size:6px}}
+@media(prefers-reduced-motion:reduce){.pot-chip{animation:none!important}}
+
+</style>
+</head>
+<body>
+<div class="grain" aria-hidden="true"></div>
+<section id="lobby" class="screen">
+  <header class="lobby-top"><div class="wordmark"><div class="seal">L</div><span>THE LAST TABLE</span></div><div class="lobby-tools"><button class="quiet-btn" id="rulesOpen">게임 안내</button><button class="quiet-btn" id="soundLobby" aria-label="소리 켜기">소리 꺼짐</button></div></header>
+  <div class="lobby-wrap">
+    <div class="hero-copy"><div class="eyebrow">A GAME OF CHANCE &amp; PROMISE</div><h1>마지막<br>한 판</h1><div class="title-en">LAST DEAL</div><p class="hero-desc">문이 닫히면, 남는 건 카드와 약속뿐.<br>당신의 이름을 걸고 마지막 판을 시작하세요.</p><div class="hero-actions"><button class="primary-btn" id="startBtn">게임 시작 <span aria-hidden="true">↗</span></button><button class="text-btn" id="rulesOpen2">게임 설명&nbsp; +</button></div><div class="archive-peek"><span>기록소</span><strong id="lobbyArchive">아직 잠든 이름이 없습니다</strong></div></div>
+    <div class="table-art" aria-hidden="true"><div class="table-shadow"></div><div class="lobby-table"></div><div class="table-stamp">FORTUNE FAVORS THE LAST HAND</div><div class="hero-cards"><div class="art-card back"></div><div class="art-card front"><div class="corner">A<small>♠</small></div><div class="suit-center">♠</div><div class="card-word">THE LAST DEAL</div></div></div><div class="lobby-token token-one">L</div><div class="lobby-token token-two">✦</div><div class="art-note">NO MONEY · ONLY A PROMISE</div></div>
+    <div class="lobby-foot">A FICTIONAL CARD GAME <span>·</span> NO REAL MONEY</div>
+  </div>
+</section>
+
+<section id="arrival" class="screen hidden" aria-label="도박장으로 이동하는 장면"><div class="corridor"></div><div class="door-light"></div><div class="hall-arch"></div><div class="hall-floor"></div><div class="walk-silhouette"><i></i></div><div class="arrival-copy"><div class="eyebrow">THE ROOM IS WAITING</div><h2 class="serif">문이 천천히 닫힙니다</h2><p>한 번 앉으면, 판이 끝날 때까지 일어날 수 없습니다.</p></div></section>
+
+<div id="contract" class="hidden">
+  <div class="contract-paper">
+    <div class="eyebrow">THE HOUSE OF LAST DEALS</div><h2>마지막 서약</h2>
+    <div class="contract-copy">나는 이 판의 승패를 온전히 받아들인다.<br>매 판의 승자는 팟을 가져간다. 잔액이 남아 있다면 다음 판은 계속된다.<br>모든 칩을 잃은 사람의 이름은 기록소에 남는다.<br>기록소에는 이곳에서 사라진 이름이 쌓인다. 오래된 장부의 마지막 장은 누구도 읽어 주지 않는다.<br><br>이곳의 칩은 오직 이야기 속 약속이며, 현실의 돈은 오가지 않는다.</div>
+    <div class="sign-row"><label class="sign-label" for="signature">서명할 이름</label><input id="signature" class="sign-input" maxlength="14" autocomplete="off" placeholder="이름을 적어 주세요"></div>
+    <div class="contract-actions"><small>서명은 이 브라우저에만 저장됩니다.<br>당신의 이름은 판이 끝나면 기록됩니다.</small><button class="primary-btn" id="signBtn">서약하고 앉기&nbsp; →</button></div>
+  </div>
+</div>
+
+<section id="game" class="screen hidden">
+  <header class="game-head"><div class="game-brand"><div class="seal">L</div><div><strong>THE LAST TABLE</strong><small>5-CARD DRAW · HAND No. <span id="handNumber">01</span></small></div></div><div class="head-stats"><div class="stat">기록된 이름 <b id="soulCount">0</b></div><button class="sound-btn" id="soundGame" aria-label="소리 켜기">♫</button></div></header>
+  <div class="round-progress" id="roundProgress" aria-label="판의 진행 단계"><span class="progress-step" data-stage="ante">앤티</span><span class="progress-step" data-stage="dice">주사위</span><span class="progress-step" data-stage="bet1">첫 베팅</span><span class="progress-step" data-stage="draw">카드 교환</span><span class="progress-step" data-stage="bet2">마지막 베팅</span><span class="progress-step" data-stage="showdown">공개</span></div>
+  <div class="casino-table" id="casinoTable"><div class="table-inner">
+    <div class="opponent-zone"><div class="identity"><div class="portrait"></div><div class="id-copy"><span class="eyebrow">YOUR OPPONENT</span><strong id="opponentName">회색 신사</strong><small id="opponentMood">말없이 카드를 섞는다</small></div></div><div class="dice-area"><span class="dice-label">상대 주사위</span><div class="dice red" id="aiDie" data-value="5" aria-label="상대 주사위"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></div></div><div class="stack right"><span class="chip-stack" id="aiChipPile" aria-hidden="true"></span><b id="aiStack">8</b> SOUL CHIPS</div></div>
+    <div class="dealer-line"><span id="phaseLabel">카드를 나눕니다</span></div>
+    <div class="play-area"><div class="hand"><div class="cards opponent-cards" id="aiCards"></div><div class="hand-label">상대의 패</div></div><div class="center-pot"><div class="pot-ring"><div class="pot-chip-field" id="potChipField" aria-hidden="true"></div><div class="pot-total"><span class="pot-value" id="potValue">2</span><span class="pot-caption">POT · SOUL CHIPS</span></div></div></div><div class="hand"><div class="cards" id="playerCards"></div><div class="hand-label">당신의 패</div></div></div>
+    <div class="dealer-line"><span id="roundTag" class="round-tag">FIRST BETTING</span></div>
+    <div class="player-zone"><div class="stack"><span class="chip-stack" id="playerChipPile" aria-hidden="true"></span><b id="playerStack">8</b> SOUL CHIPS</div><div class="dice-area"><span class="dice-label">당신의 주사위</span><div class="dice" id="playerDie" data-value="1" aria-label="당신의 주사위"><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i><i class="pip"></i></div></div><div class="identity player"><div class="id-copy"><span class="eyebrow">THE PLAYER</span><strong id="playerName">방문자</strong><small id="playerMood">당신의 차례를 기다립니다</small></div><div class="portrait player-portrait"></div></div></div>
+    <div class="status-line" id="statusLine">칩 두 개가 판돈에 놓였습니다.</div><div class="action-dock" id="actionDock"></div>
+  </div><div class="chip-flight left" aria-hidden="true"></div><div class="chip-flight right" aria-hidden="true"></div><div class="table-callout" id="tableCallout" aria-hidden="true"></div><div class="archive-ribbon">THE NAMES REMEMBER</div></div>
+</section>
+
+<div class="tutorial-scrim hidden" id="tutorial" role="dialog" aria-modal="true" aria-labelledby="tutorialTitle"><div class="tutorial-card"><div class="tutorial-kicker">FIRST NIGHT AT THE TABLE</div><div class="tutorial-icon" id="tutorialIcon">⚄</div><h2 id="tutorialTitle">눈을 굴려 선공을 정합니다</h2><p id="tutorialText">주사위를 굴려 높은 눈이 먼저 행동합니다. 같은 눈이면 승부가 날 때까지 다시 굴립니다.</p><div class="tutorial-foot"><span class="tutorial-count" id="tutorialCount">01 / 03</span><span class="tutorial-dots" id="tutorialDots"><i class="active"></i><i></i><i></i></span><button class="primary-btn tutorial-next" id="tutorialNext">다음&nbsp; →</button></div></div></div>
+
+<section id="result" class="hidden" aria-live="polite"><div class="departing-soul"></div><div class="fallen-body"></div><div class="result-content"></div></section>
+
+<div class="modal-scrim hidden" id="rulesModal" role="dialog" aria-modal="true" aria-labelledby="rulesTitle"><div class="modal"><div class="modal-head"><div><div class="eyebrow">A SMALL GUIDE BEFORE THE DEAL</div><h2 id="rulesTitle">게임 안내</h2></div><button class="close-btn" id="rulesClose" aria-label="닫기">×</button></div>
+<h3>덱과 카드 값</h3><p>조커가 없는 표준 트럼프 카드 52장을 씁니다. 무늬는 ♠ ♥ ♦ ♣이며 서로 우열이 없습니다. 숫자 2–10 다음은 J, Q, K, A입니다. 에이스(A)는 보통 가장 높지만 A-2-3-4-5 스트레이트에서는 5 아래의 낮은 카드입니다. K-A-2처럼 이어지는 패는 스트레이트가 아닙니다.</p>
+<h3>한 판의 순서</h3><ol><li>첫 판에 각자 영혼 칩 8개를 받습니다. 다음 상대도 8개로 시작하고, 플레이어는 남은 칩을 이어갑니다. 매 판 시작 때 각자 1칩을 앤티로 팟에 냅니다.</li><li>각자 주사위를 한 번 굴립니다. 높은 눈이 먼저 행동하며, 같은 눈이면 다시 굴립니다. 주사위 선공은 첫 베팅, 카드 교환, 마지막 베팅에서 모두 유지됩니다.</li><li>각자 카드 5장을 비공개로 받습니다. 첫 베팅 라운드가 끝나면 원하는 카드 0–3장을 버리고 새 카드로 바꿉니다. 카드 교환도 주사위 선공부터 합니다.</li><li>마지막 베팅에서 콜·체크로 베팅이 끝나면 남은 사람의 카드를 공개합니다. 누군가 폴드하면 공개 없이 판이 끝나고, 더 높은 패가 팟을 가져갑니다.</li></ol>
+<h3>카드 교환 방법과 횟수</h3><ol><li>첫 베팅 라운드가 끝나고 카드 교환 차례가 오면, 손에 든 카드 중 바꾸고 싶은 카드를 클릭합니다. 선택한 카드는 살짝 위로 올라옵니다.</li><li>잘못 선택했다면 같은 카드를 다시 클릭해 선택을 취소할 수 있습니다.</li><li>한 번의 교환 차례에서 최대 3장까지 선택할 수 있습니다. 선택을 마치면 아래의 <b>카드 교환</b> 버튼을 눌러 확정합니다.</li><li>카드를 바꾸지 않으려면 <b>교환 없이</b> 버튼을 누릅니다.</li></ol><p>플레이어와 상대는 각각 한 판에 교환 기회를 한 번씩 받습니다. 즉, 한 판에서 플레이어가 교환하는 횟수는 1회이며, 그때 0–3장을 바꿀 수 있습니다. 확정한 뒤에는 같은 판에서 다시 교환할 수 없습니다.</p>
+<h3>5장 드로 · 노리밋 베팅</h3><p>이 게임은 노리밋 5장 드로 포커입니다. 베팅은 1칩부터 남은 칩 전부까지 정수 단위로 할 수 있습니다. 화면의 베팅액 조절 막대에서 금액을 고르거나 올인을 누르세요. 레이즈는 현재 베팅을 먼저 맞춘 뒤 추가 금액을 올립니다. 최소 레이즈 증액은 직전의 완전한 베팅 또는 레이즈 금액과 같습니다. 체크는 미납 베팅이 없을 때만 가능하고, 콜은 현재 베팅을 맞춥니다. 베팅 차례는 두 사람이 모두 같은 금액을 냈거나 한 사람이 폴드할 때 끝납니다. 레이즈 횟수에는 별도 제한이 없습니다.</p>
+<h3>올인과 미달 콜</h3><p>언제든 남은 칩 전부를 올인할 수 있습니다. 콜할 칩이 모자라면 남은 칩만 넣는 올인 콜입니다. 콜 금액은 낼 수 있지만 최소 레이즈 금액에는 못 미치는 경우에도 전부 넣는 짧은 올인 레이즈가 허용됩니다. 짧은 올인 레이즈는 이미 행동한 상대의 레이즈 권리를 다시 열지 않습니다. 이 테이블은 2인 대전이므로 상대가 올인한 뒤에는 더 걸 수 없고 콜 또는 폴드만 가능합니다. 올인한 사람의 금액이 콜되면, 교환 전 올인이면 남은 카드 교환만 마친 뒤, 교환 후 올인이면 바로 쇼다운합니다. 맞춰지지 않은 초과 베팅은 베팅한 사람에게 돌려주며 별도 사이드 팟은 만들지 않습니다.</p>
+<h3>승패와 칩 정산</h3><p>폴드하거나 팟을 잃어도 내 칩이 남아 있으면 같은 상대와 다음 판을 계속합니다. 쇼다운 동률이면 팟을 반씩 나누고, 나누어지지 않는 1칩은 주사위 선공이 가져갑니다. 모든 베팅과 빚 정산 뒤 내 칩이 0개일 때만 패배 장면이 나옵니다. 상대의 칩이 0개가 되면 그 영혼이 기록소에 남고, 다음 상대와 가진 칩을 이어서 플레이합니다.</p>
+<h3>패의 순서와 동률 판정</h3><ol><li><b>스트레이트 플러시</b>: 같은 무늬의 연속 5장. 가장 높은 숫자를 비교하며 A-2-3-4-5는 5-high입니다.</li><li><b>포 카드</b>: 같은 숫자 4장. 네 장의 숫자, 남은 한 장 순으로 비교합니다.</li><li><b>풀 하우스</b>: 같은 숫자 3장과 페어. 트리플 숫자, 페어 숫자 순입니다.</li><li><b>플러시</b>: 같은 무늬 5장. 높은 카드부터 다섯 장을 차례대로 비교합니다.</li><li><b>스트레이트</b>: 무늬와 관계없이 연속 5장. 가장 높은 숫자를 비교합니다.</li><li><b>트리플</b>: 같은 숫자 3장. 트리플 숫자 뒤에 남은 두 카드를 높은 순서로 비교합니다.</li><li><b>투 페어</b>: 서로 다른 페어 2개. 높은 페어, 낮은 페어, 남은 키커 순입니다.</li><li><b>원 페어</b>: 같은 숫자 2장. 페어 숫자 뒤에 남은 세 키커를 높은 순서로 비교합니다.</li><li><b>하이 카드</b>: 위 조합이 없을 때 높은 카드부터 다섯 장을 비교합니다.</li></ol><p>모든 비교가 같으면 동률이며 무늬로 승자를 가르지 않습니다. 키커는 조합에 들지 않은 나머지 카드입니다.</p>
+<h3>기록소</h3><p>이곳에서 사라진 이들의 이름은 기록소에 남습니다. 오래된 장부에는 규칙이 적혀 있지만, 그 마지막 장은 누구도 읽어 주지 않습니다.</p>
+<div style="display:flex;justify-content:flex-end;margin-top:24px"><button class="primary-btn" id="rulesGotIt">알겠습니다</button></div></div></div>
+
+<script>
+(function(){
+  "use strict";
+  const $=id=>document.getElementById(id);
+  const views={lobby:$("lobby"),arrival:$("arrival"),contract:$("contract"),game:$("game"),result:$("result")};
+  const SUITS=["♠","♥","♦","♣"],FACE={11:"J",12:"Q",13:"K"};
+  const opponentNames=["회색 신사","유리 눈","검은 장갑","밤의 손님","마지막 딜러"];
+  let ledger={souls:[],name:""};
+  let soundOn=false,audioCtx=null,game=null,session=null,sessionNumber=0,handNumber=0;
+  try{const saved=JSON.parse(localStorage.getItem("lastDealLedger")||"{}");if(saved&&Array.isArray(saved.souls))ledger=saved;}catch(e){}
+  function saveLedger(){try{localStorage.setItem("lastDealLedger",JSON.stringify(ledger));}catch(e){}updateLobbyArchive();}
+  function updateLobbyArchive(){const n=ledger.souls.length;$("lobbyArchive").textContent=n?ledger.souls.slice(-2).map(x=>x.name).join(" · ")+(n>2?" 외 "+(n-2)+"명":"")+"  /  "+n+"명":"아직 잠든 이름이 없습니다";}
+  function showOnly(id){Object.keys(views).forEach(k=>views[k].classList.toggle("hidden",k!==id));}
+  function chirp(freq,duration,type){if(!soundOn)return;try{audioCtx=audioCtx||new(window.AudioContext||window.webkitAudioContext)();const o=audioCtx.createOscillator(),g=audioCtx.createGain();o.type=type||"sine";o.frequency.value=freq;g.gain.setValueAtTime(.035,audioCtx.currentTime);g.gain.exponentialRampToValueAtTime(.001,audioCtx.currentTime+duration);o.connect(g);g.connect(audioCtx.destination);o.start();o.stop(audioCtx.currentTime+duration);}catch(e){}}
+  function toggleSound(){soundOn=!soundOn;$("soundLobby").textContent=soundOn?"소리 켜짐":"소리 꺼짐";$("soundLobby").setAttribute("aria-label",soundOn?"소리 끄기":"소리 켜기");$("soundGame").textContent=soundOn?"♫":"♪";chirp(480,.09);}
+  $("soundLobby").onclick=toggleSound;$("soundGame").onclick=toggleSound;
+  function openRules(){$("rulesModal").classList.remove("hidden");}
+  function closeRules(){$("rulesModal").classList.add("hidden");}
+  $("rulesOpen").onclick=openRules;$("rulesOpen2").onclick=openRules;$("rulesClose").onclick=closeRules;$("rulesGotIt").onclick=closeRules;
+  $("rulesModal").addEventListener("click",e=>{if(e.target===$("rulesModal"))closeRules();});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")closeRules();});
+  const tutorialSteps=[
+    {icon:"⚄",title:"눈을 굴려 선공을 정합니다",text:"주사위를 굴려 높은 눈이 먼저 행동합니다. 같은 눈이면 승부가 날 때까지 다시 굴립니다."},
+    {icon:"♧",title:"칩을 걸고, 패를 다듬습니다",text:"첫 베팅이 끝나면 카드 교환 차례가 옵니다. 바꾸려는 카드를 눌러 선택하고, 다시 누르면 선택이 취소됩니다. 한 판에 한 번, 최대 3장까지 고른 뒤 ‘카드 교환’을 누르세요. 그대로 둘 때는 ‘교환 없이’를 누르면 됩니다. 체크·콜·레이즈·폴드로 베팅할 수도 있습니다."},
+    {icon:"♠",title:"마지막 베팅 뒤 패를 공개합니다",text:"표준 트럼프 52장으로 하는 5장 드로 포커입니다. 팟을 잃어도 칩이 남아 있으면 다음 판을 이어갑니다. 칩이 모두 사라져야 이 밤이 끝납니다."}
+  ];
+  let tutorialIndex=0;
+  function renderTutorial(){const step=tutorialSteps[tutorialIndex];$("tutorialIcon").textContent=step.icon;$("tutorialTitle").textContent=step.title;$("tutorialText").textContent=step.text;$("tutorialCount").textContent=String(tutorialIndex+1).padStart(2,"0")+" / "+String(tutorialSteps.length).padStart(2,"0");$("tutorialDots").querySelectorAll("i").forEach((dot,i)=>dot.classList.toggle("active",i===tutorialIndex));$("tutorialNext").textContent=tutorialIndex===tutorialSteps.length-1?"첫 판 시작  →":"다음  →";}
+  function prepareTutorialTable(){game=null;updateTable();$("playerCards").innerHTML="";$("aiCards").innerHTML="";$("actionDock").innerHTML="";$("phaseLabel").textContent="서명한 이름이 테이블에 놓입니다";$("roundTag").textContent="A NEW NIGHT";$("statusLine").textContent="게임의 흐름을 잠시 살펴봅니다.";setDie($("playerDie"),1);setDie($("aiDie"),5);setProgress("ante");}
+  function openTutorial(){tutorialIndex=0;renderTutorial();$("tutorial").classList.remove("hidden");}
+  $("tutorialNext").onclick=()=>{if(tutorialIndex<tutorialSteps.length-1){tutorialIndex++;renderTutorial();return;}$("tutorial").classList.add("hidden");try{localStorage.setItem("lastDealTutorialSeen","1");}catch(e){}startSession(8);};
+  $("startBtn").onclick=()=>{showOnly("arrival");setTimeout(()=>{$("contract").classList.remove("hidden");$("signature").value=ledger.name||"";setTimeout(()=>$("signature").focus(),250);},2600);};
+  $("signBtn").onclick=()=>{const n=$("signature").value.trim();if(!n){$("signature").focus();$("signature").placeholder="이름이 있어야 서명할 수 있어요";return;}ledger.name=n.slice(0,14);saveLedger();$("contract").classList.add("hidden");chirp(180,.42,"triangle");setTimeout(()=>{showOnly("game");prepareTutorialTable();let seen=false;try{seen=localStorage.getItem("lastDealTutorialSeen")==="1";}catch(e){}if(seen)startSession(8);else openTutorial();},650);};
+
+  function deck(){const d=[];for(const s of SUITS)for(let r=1;r<=13;r++)d.push({suit:s,rank:r});for(let i=d.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[d[i],d[j]]=[d[j],d[i]];}return d;}
+  function take(n){return game.deck.splice(0,n);}
+  function cardValue(r){return r===1||r===14?14:r;}
+  function cardRank(r){return r===1||r===14?"A":FACE[r]||String(r);}
+  function cardHTML(c,opts){const o=opts||{},red=!!c&&(c.suit==="♥"||c.suit==="♦");return '<div class="playing-card'+(red?' red':'')+(o.back?' back':'')+(o.selectable?' selectable':'')+(o.selected?' selected':'')+(o.reveal?' reveal-card':'')+(o.initial?' dealt-initial':'')+(o.dealt?' dealt-new':'')+'"'+(o.selectable?' role="button" tabindex="0" aria-pressed="'+(o.selected?'true':'false')+'"':'')+' data-card="'+o.index+'">'+(o.back?'':'<span class="rank">'+cardRank(c.rank)+'<small>'+c.suit+'</small></span><span class="suit">'+c.suit+'</span><span class="center-rank">'+cardRank(c.rank)+'</span>')+'</div>';}
+  function renderCards(){if(!game)return;const fresh=game.newlyDealt||{player:[],ai:[]},initial=game.initialDeal||{player:false,ai:false};
+    $("playerCards").innerHTML=game.playerCards.map((c,i)=>cardHTML(c,{index:i,selectable:game.stage==="draw"&&game.actor==="player",selected:game.discards.includes(i),initial:initial.player,dealt:fresh.player.includes(c)})).join("");
+    $("aiCards").innerHTML=Array.from({length:5},(_,i)=>cardHTML(null,{back:true,index:i,initial:initial.ai,dealt:fresh.ai.includes(game.aiCards[i])})).join("");
+    game.newlyDealt={player:[],ai:[]};game.initialDeal={player:false,ai:false};
+    if(game.stage==="draw"&&game.actor==="player")$("playerCards").querySelectorAll(".playing-card").forEach(el=>{const choose=()=>toggleDiscard(Number(el.dataset.card));el.onclick=choose;el.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();choose();}};});
+  }
+  function evaluate(cards){
+    const rs=cards.map(c=>cardValue(c.rank)).sort((a,b)=>b-a),counts={};rs.forEach(r=>counts[r]=(counts[r]||0)+1);
+    const groups=Object.keys(counts).map(Number).sort((a,b)=>counts[b]-counts[a]||b-a);
+    const flush=cards.every(c=>c.suit===cards[0].suit);let uniq=Array.from(new Set(rs));let straight=false,high=uniq[0];if(uniq.length===5){if(uniq[0]-uniq[4]===4)straight=true;else if(uniq.join(",")==="14,5,4,3,2"){straight=true;high=5;}}
+    let cat=0,kickers=rs.slice();
+    if(straight&&flush){cat=8;kickers=[high];}
+    else if(counts[groups[0]]===4){cat=7;kickers=[groups[0],...rs.filter(r=>r!==groups[0])];}
+    else if(counts[groups[0]]===3&&counts[groups[1]]===2){cat=6;kickers=[groups[0],groups[1]];}
+    else if(flush){cat=5;kickers=rs;}
+    else if(straight){cat=4;kickers=[high];}
+    else if(counts[groups[0]]===3){cat=3;kickers=[groups[0],...rs.filter(r=>r!==groups[0])];}
+    else if(counts[groups[0]]===2&&counts[groups[1]]===2){cat=2;kickers=[Math.max(groups[0],groups[1]),Math.min(groups[0],groups[1]),...rs.filter(r=>r!==groups[0]&&r!==groups[1])];}
+    else if(counts[groups[0]]===2){cat=1;kickers=[groups[0],...rs.filter(r=>r!==groups[0])];}
+    return {cat,kickers,score:cat*Math.pow(15,5)+kickers.reduce((a,v,i)=>a+v*Math.pow(15,4-i),0)};
+  }
+  const handNames=["하이 카드","원 페어","투 페어","트리플","스트레이트","플러시","풀 하우스","포 카드","스트레이트 플러시"];
+  function setDie(el,value){el.dataset.value=String(value);el.setAttribute("aria-label","주사위 "+value);}
+  function setProgress(stage){const order=["ante","dice","bet1","draw","bet2","showdown"],current=Math.max(0,order.indexOf(stage));document.querySelectorAll(".progress-step").forEach((el,i)=>{el.classList.toggle("active",i===current);el.classList.toggle("past",i<current);});}
+  function triggerCallout(text,danger){const el=$("tableCallout"),table=$("casinoTable");if(!el)return;el.textContent=text;el.classList.remove("show","danger");table.classList.remove("high-stakes");void el.offsetWidth;el.classList.toggle("danger",!!danger);el.classList.add("show");if(danger){table.classList.add("high-stakes");setTimeout(()=>table.classList.remove("high-stakes"),1000);}setTimeout(()=>el.classList.remove("show","danger"),1350);}
+  function renderPile(id,count){
+    const pile=$(id),visible=Math.min(8,Math.max(0,Math.floor(count)));
+    if(pile.dataset.count===String(visible))return;
+    pile.dataset.count=String(visible);
+    pile.innerHTML=Array.from({length:visible},(_,i)=>'<i style="--i:'+i+'"></i>').join("");
+  }
+  function startSession(initialStack){
+    sessionNumber++;handNumber=0;
+    session={playerStack:initialStack,aiStack:8,opponent:opponentNames[(sessionNumber-1)%opponentNames.length],debt:0,pledged:[]};
+    startHand();
+  }
+  function startHand(){
+    if(!session)return;
+    if(session.playerStack<=0||session.aiStack<=0)return;
+    handNumber++;game={deck:deck(),playerCards:[],aiCards:[],playerStack:session.playerStack,aiStack:session.aiStack,pot:0,stage:"deal",actor:null,initiative:null,round:null,discards:[],drawOrder:[],drawIndex:0,debt:session.debt,pledged:session.pledged.slice(),playerContributed:0,aiContributed:0,lastMessage:"",busy:false,newlyDealt:{player:[],ai:[]},initialDeal:{player:true,ai:true},opponent:session.opponent};
+    setProgress("ante");
+    const table=$("casinoTable");table.classList.remove("table-enter");void table.offsetWidth;table.classList.add("table-enter");setTimeout(()=>table.classList.remove("table-enter"),950);
+    game.playerCards=take(5).sort((a,b)=>cardValue(b.rank)-cardValue(a.rank));game.aiCards=take(5).sort((a,b)=>cardValue(b.rank)-cardValue(a.rank));
+    $("handNumber").textContent=String(handNumber).padStart(2,"0");$("opponentName").textContent=game.opponent;$("playerName").textContent=ledger.name||"방문자";
+    $("opponentMood").textContent="말없이 카드를 섞는다";$("playerMood").textContent="당신의 차례를 기다립니다";
+    setDie($("playerDie"),1);setDie($("aiDie"),5);
+    $("phaseLabel").textContent="새 판을 준비합니다";$("roundTag").textContent="HAND "+String(handNumber).padStart(2,"0");
+    $("statusLine").textContent="각자의 남은 칩은 보존됩니다. 이번 판의 앤티만 팟에 놓입니다.";
+    updateTable();renderCards();renderActions();
+    setTimeout(putAntes,750);
+  }
+  function putAntes(){
+    if(!game)return;
+    const table=$("casinoTable");table.classList.add("antes-moving");chirp(205,.12,"triangle");
+    setTimeout(()=>{if(!game)return;const p=Math.min(1,game.playerStack),a=Math.min(1,game.aiStack);game.playerStack-=p;game.aiStack-=a;game.playerContributed+=p;game.aiContributed+=a;game.pot+=p+a;updateTable();$("phaseLabel").textContent="앤티가 팟에 놓였습니다";$("statusLine").textContent="각자 1칩의 앤티를 냈습니다. 팟은 "+game.pot+"칩입니다. 주사위 결과를 기다리세요.";chirp(270,.16,"triangle");setTimeout(()=>{table.classList.remove("antes-moving");rollDice();},520);},850);
+  }
+  function rollDice(){if(!game)return;game.stage="dice";setProgress("dice");$("playerDie").classList.add("rolling");$("aiDie").classList.add("rolling");$("statusLine").textContent="주사위가 굴러갑니다. 높은 눈이 이번 판의 선공입니다.";chirp(250,.22,"triangle");let ticks=0;const timer=setInterval(()=>{if(!game){clearInterval(timer);return;}setDie($("playerDie"),1+Math.floor(Math.random()*6));setDie($("aiDie"),1+Math.floor(Math.random()*6));if(++ticks>=14){clearInterval(timer);$("playerDie").classList.remove("rolling");$("aiDie").classList.remove("rolling");const p=1+Math.floor(Math.random()*6),a=1+Math.floor(Math.random()*6);setDie($("playerDie"),p);setDie($("aiDie"),a);if(p===a){$("statusLine").textContent="같은 눈입니다. 숨을 고르고 다시 굴립니다.";triggerCallout("다시 굴립니다");setTimeout(rollDice,1050);return;}game.initiative=p>a?"player":"ai";chirp(520,.12);const first=game.initiative==="player"?"당신":"상대";$("phaseLabel").textContent=first+"이 먼저 행동합니다";$("statusLine").textContent="당신 "+p+" · 상대 "+a+" — "+first+"이 먼저 시작합니다.";triggerCallout("선공 · "+first);if(game.playerStack===0||game.aiStack===0){setTimeout(()=>startDraw(true),1000);return;}setTimeout(()=>beginBetting(1,game.initiative),1000);}},130);}
+  function startDraw(allIn){if(!game)return;game.stage="draw";setProgress("draw");game.allIn=!!allIn;game.drawOrder=game.initiative==="player"?["player","ai"]:["ai","player"];game.drawIndex=0;game.discards=[];game.actor=null;game.busy=false;$("phaseLabel").textContent=allIn?"올인 상태 · 마지막 카드 교환":"카드를 바꿀 차례입니다";$("roundTag").textContent="THE DRAW";$("statusLine").textContent=allIn?"올인한 쪽이 있습니다. 카드 교환 뒤 바로 공개합니다.":"한 판에 한 번, 최대 3장까지 교환한 뒤 마지막 베팅을 합니다.";advanceDrawTurn();}
+  function beginBetting(round,first){
+    if(!game)return;game.stage=round===1?"bet1":"bet2";setProgress(game.stage);$("phaseLabel").textContent=round===1?"첫 베팅을 시작합니다":"마지막 베팅입니다";$("roundTag").textContent=round===1?"FIRST BETTING":"FINAL BETTING";game.round={number:round,target:0,commits:{player:0,ai:0},acted:new Set(),actedSinceFull:new Set(),raiseLocked:{player:false,ai:false},first:first,raiseCount:0,minRaise:1};game.actor=first;game.busy=false;$("statusLine").textContent=round===1?(first==="player"?"주사위가 당신을 골랐습니다. 체크하거나 먼저 베팅하세요.":game.opponent+particle(game.opponent,"subject")+" 먼저 시작합니다. 패를 살핍니다."):(first==="player"?"새 패로 마지막 베팅을 시작합니다.":"상대가 마지막 베팅을 시작합니다.");renderAll();if(game.actor==="ai")scheduleAI();
+  }
+  function renderPotChips(amount){
+    const field=$("potChipField");if(!field)return;
+    const count=Math.max(0,Math.floor(Number(amount)||0));
+    if(field.dataset.count===String(count))return;
+    field.dataset.count=String(count);
+    const fragment=document.createDocumentFragment();
+    for(let i=0;i<count;i++){
+      const chip=document.createElement("i");chip.className="pot-chip";
+      chip.style.animationDelay=(Math.min(i,18)*.008)+"s";
+      fragment.appendChild(chip);
+    }
+    field.replaceChildren(fragment);
+  }
+  function updateTable(){
+    $("playerStack").textContent=game?game.playerStack:8;$("aiStack").textContent=game?game.aiStack:8;const pot=game?game.pot:0;$("potValue").textContent=pot;renderPotChips(pot);
+    renderPile("playerChipPile",game?game.playerStack:8);renderPile("aiChipPile",game?game.aiStack:8);
+    $("soulCount").textContent=ledger.souls.length;
+  }
+  function renderAll(){updateTable();renderCards();renderActions();}
+  function toggleDiscard(i){
+    if(!game||game.stage!=="draw"||game.actor!=="player"||game.busy)return;
+    const x=game.discards.indexOf(i);
+    if(x>=0)game.discards.splice(x,1);
+    else if(game.discards.length<3)game.discards.push(i);
+    else{$("statusLine").textContent="한 번에 최대 3장까지 선택할 수 있습니다.";return;}
+    const card=$("playerCards").querySelector('[data-card="'+i+'"]');
+    const selected=game.discards.includes(i);
+    if(card){card.classList.toggle("selected",selected);card.setAttribute("aria-pressed",String(selected));}
+    $("statusLine").textContent=game.discards.length+"장 선택 · 최대 3장 · 다시 누르면 선택 취소";
+    chirp(360,.05);renderActions();
+  }
+  function renderActions(){
+    const dock=$("actionDock");dock.innerHTML="";if(!game)return;
+    const row=document.createElement("div");row.className="action-row";dock.appendChild(row);
+    const add=(label,sub,kind,amount,cls,disabled)=>{const b=document.createElement("button");b.className="action-btn "+(cls||"");b.disabled=!!disabled;b.innerHTML=label+(sub?'<span class="sub">'+sub+"</span>":"");b.onclick=()=>{if(kind==="draw"){confirmDraw();return;}act("player",kind,amount||0);};row.appendChild(b);};
+    const addSizer=(kind,min,max,initial,label)=>{
+      const panel=document.createElement("div");panel.className="bet-sizing";
+      const tag=document.createElement("span");tag.className="bet-size-label";tag.textContent=label;
+      const slider=document.createElement("input");slider.type="range";slider.min=String(min);slider.max=String(max);slider.value=String(initial);slider.setAttribute("aria-label",label);
+      const value=document.createElement("output");value.textContent=initial+" 칩";slider.oninput=()=>{value.textContent=slider.value+" 칩";};
+      const go=document.createElement("button");go.className="action-btn gold-btn size-go";go.textContent=kind==="bet"?"베팅":"레이즈";go.onclick=()=>act("player",kind,Number(slider.value));
+      panel.append(tag,slider,value,go);dock.insertBefore(panel,row);
+    };
+    if(game.stage==="draw"){
+      $("phaseLabel").textContent=game.allIn?"올인 상태 · 마지막 카드 교환":"원하는 카드를 바꾸세요";$("roundTag").textContent="THE DRAW";
+      if(game.actor==="player"&&!game.busy){add("카드 교환",game.discards.length+"장 선택","draw",0,"gold-btn",false);add("교환 없이", "패를 유지", "draw",0,"",game.discards.length>0);}
+      else add("상대가 패를 고르는 중","잠시만 기다리세요","",0,"",true);
+      return;
+    }
+    if(game.stage==="showdown"||game.stage==="done"){return;}
+    if(!game.stage.startsWith("bet")){add("주사위를 굴리는 중","", "",0,"",true);return;}
+    const r=game.round,me="player",toCall=Math.max(0,r.target-r.commits[me]);
+    if(game.actor!=="player"||game.busy){add("상대가 생각 중","차례를 기다리세요","",0,"",true);return;}
+    if(toCall===0){
+      add("체크","판돈을 더 내지 않음","check",0,"",false);
+      if(game.playerStack>0){const initial=Math.min(game.playerStack,Math.max(1,Math.ceil(game.pot/2)));addSizer("bet",1,game.playerStack,initial,"베팅액");add("올인","전부 "+game.playerStack+" 칩","bet",game.playerStack,"danger");}
+    }else{
+      add(game.playerStack>0&&game.playerStack<=toCall?"올인 콜":"콜",""+Math.min(toCall,game.playerStack)+" 칩","call",0,"gold-btn",game.playerStack===0);
+      const shortfall=Math.max(0,toCall-game.playerStack),credit=ledger.souls.length*2;
+      if(shortfall>0&&credit>=shortfall&&game.aiStack===0)add("기록소에 손 내밀기","이름 "+Math.ceil(shortfall/2)+"개를 건다","loanCall",shortfall,"loan");
+      add("폴드","이번 판을 포기","fold",0,"danger");
+      if(game.aiStack>0&&!r.raiseLocked.player&&game.playerStack>toCall){const minAmount=toCall+r.minRaise;if(game.playerStack>=minAmount){const initial=Math.min(game.playerStack,Math.max(minAmount,Math.ceil((toCall+game.pot/2))));addSizer("raise",minAmount,game.playerStack,initial,"레이즈액");}if(game.playerStack!==minAmount)add("올인 레이즈","전부 "+game.playerStack+" 칩","raise",game.playerStack,"danger");}
+    }
+  }
+  function contribute(id,amount){const key=id==="player"?"playerStack":"aiStack",n=Math.max(0,Math.min(game[key],amount));game[key]-=n;game.pot+=n;game.round.commits[id]+=n;game[id+"Contributed"]+=n;return n;}
+  function pulseTable(){const t=$("casinoTable");t.classList.remove("check-pulse");void t.offsetWidth;t.classList.add("check-pulse");setTimeout(()=>t.classList.remove("check-pulse"),420);}
+  function flyWager(id,done){const t=$("casinoTable"),who=id==="player"?"wager-player":"wager-ai";t.classList.remove("wager-moving","wager-player","wager-ai");void t.offsetWidth;t.classList.add("wager-moving",who);setTimeout(()=>{t.classList.remove("wager-moving",who);done();},900);}
+  function act(id,kind,amount,loan){
+    if(!game||game.busy||game.actor!==id||!game.stage.startsWith("bet"))return;
+    const r=game.round,other=id==="player"?"ai":"player",key=id==="player"?"playerStack":"aiStack";
+    if(kind==="fold"){game.lastMessage=id==="player"?"당신이 패를 접었습니다.":"상대가 패를 접었습니다.";game.actor=null;game.busy=true;$("statusLine").textContent=game.lastMessage+" 팟이 이동합니다.";renderActions();setTimeout(()=>{if(game)resolveHand(other,"폴드");},1050);chirp(180,.16,"triangle");return;}
+    if(kind==="check"){r.acted.add(id);r.actedSinceFull.add(id);game.lastMessage=id==="player"?"당신이 체크했습니다.":"상대가 체크했습니다.";$("statusLine").textContent=game.lastMessage+(id==="player"?" 상대의 응답을 기다립니다.":" 이제 당신의 행동입니다.");game.actor=null;game.busy=true;renderActions();pulseTable();chirp(300,.06);setTimeout(()=>{if(!game)return;game.busy=false;if(r.acted.has(other)&&r.commits.player===r.commits.ai){advanceStreet();return;}game.actor=other;renderAll();if(other==="ai")scheduleAI();},650);return;}
+    let pledgedCount=0;
+    if(kind==="loanCall"){
+      const need=Math.max(0,r.target-r.commits[id]),short=Math.max(0,need-game[key]),n=Math.ceil(short/2);
+      const pledge=ledger.souls.splice(0,n);pledgedCount=n;game.pledged=game.pledged.concat(pledge);game.debt+=short;game[key]+=short;saveLedger();game.lastMessage="기록소의 이름 "+n+"개가 응답했습니다.";kind="call";
+    }
+    if(kind==="bet"||kind==="raise"){
+      const previousTarget=r.target,planned=Math.max(0,Math.min(game[key],amount));if(planned<=0){game.actor=other;renderAll();return;}game.lastMessage=id==="player"?"당신이 "+planned+"칩을 걸었습니다.":"상대가 "+planned+"칩을 걸었습니다.";game.actor=null;game.busy=true;$("statusLine").textContent=game.lastMessage+(id==="player"?" 상대의 응답을 기다립니다.":" 당신은 콜, 레이즈 또는 폴드를 고를 수 있습니다.");renderActions();chirp(410,.09);if(planned>=game[key])triggerCallout("올인",true);flyWager(id,()=>{if(!game)return;game.busy=false;contribute(id,planned);const newTarget=r.commits[id],raiseSize=newTarget-previousTarget;r.target=Math.max(r.target,newTarget);if(kind==="bet"){r.minRaise=Math.max(1,raiseSize);r.actedSinceFull=new Set([id]);r.raiseLocked={player:false,ai:false};}else{r.raiseCount++;if(raiseSize>=r.minRaise){r.minRaise=raiseSize;r.actedSinceFull=new Set([id]);r.raiseLocked={player:false,ai:false};}else{if(r.actedSinceFull.has(other))r.raiseLocked[other]=true;r.actedSinceFull.add(id);}}r.acted.add(id);game.actor=other;renderAll();if(other==="ai")scheduleAI();});return;
+    }
+    if(kind==="call"){
+      const need=Math.max(0,r.target-r.commits[id]);game.lastMessage=id==="player"?"당신이 콜했습니다.":"상대가 콜했습니다.";game.actor=null;game.busy=true;$("statusLine").textContent=pledgedCount?"기록소의 응답으로 콜을 이어갑니다.":"콜을 선택했습니다. 칩을 팟으로 옮깁니다.";renderActions();chirp(330,.09);flyWager(id,()=>{if(!game)return;game.busy=false;const paid=contribute(id,need);game.lastMessage=id==="player"?"당신이 "+paid+"칩으로 콜했습니다.":"상대가 "+paid+"칩으로 콜했습니다.";if(paid<need){const excess=Math.max(0,r.commits[other]-r.commits[id]);if(excess){game.pot-=excess;game[other==="player"?"playerStack":"aiStack"]+=excess;r.commits[other]-=excess;game[other+"Contributed"]-=excess;}game.lastMessage+=" 모자란 베팅은 반환됩니다.";}$("statusLine").textContent=game.lastMessage;advanceStreet();});return;
+    }
+  }
+  function particle(subject,kind){const syllable=String(subject).slice(-1),code=syllable.charCodeAt(0);if(code>=0xAC00&&code<=0xD7A3)return (code-0xAC00)%28===0?(kind==="subject"?"가":"를"):(kind==="subject"?"이":"을");return kind==="subject"?"이":"을";}
+  function scheduleAI(){if(!game||game.actor!=="ai")return;game.busy=true;renderActions();$("opponentMood").textContent="카드 너머로 당신을 살핀다";$("statusLine").textContent=game.opponent+particle(game.opponent,"subject")+" 패를 읽고 있습니다.";setTimeout(()=>{if(!game||game.actor!=="ai")return;game.busy=false;aiAct();},2200+Math.random()*1100);}
+  function aiAct(){
+    const r=game.round,me="ai",other="player",toCall=Math.max(0,r.target-r.commits.ai),ev=evaluate(game.aiCards),cat=ev.cat,stack=game.aiStack;
+    if(toCall===0){
+      const bluff=Math.random()<.08,shouldBet=cat>=4?Math.random()<.72:cat>=2?Math.random()<.42:bluff;
+      if(shouldBet&&stack>0){const size=Math.min(stack,Math.max(1,Math.ceil(game.pot*(cat>=6?.6:cat>=2?.4:.25))));act("ai","bet",size);}else act("ai","check",0);
+      return;
+    }
+    const costly=toCall>Math.max(2,Math.floor(stack*.43));let callOdds=cat>=5?.98:cat>=3?.93:cat>=2?.82:cat===1?.63:.24;
+    if(costly)callOdds-=.22;if(ev.kickers[0]>=12)callOdds+=.10;
+    if(Math.random()>callOdds){act("ai","fold",0);return;}
+    if(game.playerStack>0&&cat>=6&&!r.raiseLocked.ai&&stack>=toCall+r.minRaise&&Math.random()<.25){act("ai","raise",toCall+r.minRaise);return;}
+    act("ai","call",0);
+  }
+  function advanceStreet(){
+    if(!game)return;game.actor=null;game.busy=false;
+    if(game.stage==="bet1"){game.lastMessage+=" 이제 카드를 교환합니다.";startDraw(game.playerStack===0||game.aiStack===0);return;}
+    if(game.stage==="bet2"){showdown();return;}
+  }
+  function advanceDrawTurn(){
+    if(!game||game.stage!=="draw")return;
+    if(game.drawIndex>=game.drawOrder.length){game.actor=null;game.busy=false;if(game.playerStack===0||game.aiStack===0){showdown();return;}beginBetting(2,game.initiative);return;}
+    const who=game.drawOrder[game.drawIndex];game.actor=who;game.discards=[];
+    if(who==="player"){game.busy=false;$("statusLine").textContent="카드를 눌러 선택하세요. 다시 누르면 취소 · 최대 3장 · 한 판에 1회";renderAll();return;}
+    game.busy=true;$("opponentMood").textContent="교환할 패를 고른다";$("statusLine").textContent=game.opponent+particle(game.opponent,"subject")+" 패를 고르고 있습니다.";renderAll();
+    setTimeout(()=>{if(!game||game.stage!=="draw"||game.actor!=="ai")return;const toss=aiDiscard();$("aiCards").classList.add("trading");$("statusLine").textContent=game.opponent+particle(game.opponent,"subject")+" "+toss.length+"장의 카드를 바꿉니다.";setTimeout(()=>{if(!game||game.stage!=="draw"||game.actor!=="ai")return;replaceCards("ai",toss);$("aiCards").classList.remove("trading");game.drawIndex++;game.actor=null;game.busy=false;renderCards();advanceDrawTurn();},950);},1250);
+  }
+  function aiDiscard(){
+    const cards=game.aiCards,ev=evaluate(cards),keep=new Set(),counts={};cards.forEach((c,i)=>{(counts[c.rank]||(counts[c.rank]=[])).push(i);});
+    if(ev.cat>=4)return [];
+    if(ev.cat===3||ev.cat===7){Object.keys(counts).forEach(r=>{if(counts[r].length>=3)counts[r].forEach(i=>keep.add(i));});}
+    else if(ev.cat===2||ev.cat===6){Object.keys(counts).forEach(r=>{if(counts[r].length===2)counts[r].forEach(i=>keep.add(i));});}
+    else if(ev.cat===1){Object.keys(counts).forEach(r=>{if(counts[r].length===2)counts[r].forEach(i=>keep.add(i));});}
+    else {const sorted=cards.map((c,i)=>({c,i})).sort((a,b)=>cardValue(b.c.rank)-cardValue(a.c.rank));sorted.slice(0,2).forEach(x=>keep.add(x.i));}
+    const toss=cards.map((c,i)=>i).filter(i=>!keep.has(i));return toss.slice(0,3);
+  }
+  function confirmDraw(){
+    if(!game||game.stage!=="draw"||game.actor!=="player"||game.busy)return;const chosen=game.discards.slice();game.actor=null;game.busy=true;$("statusLine").textContent=chosen.length?chosen.length+"장의 카드가 테이블 아래로 밀려납니다.":"패를 그대로 유지합니다.";game.playerCards.forEach((_,i)=>{if(chosen.includes(i)){const el=$("playerCards").querySelector('[data-card="'+i+'"]');if(el)el.classList.add("discarding");}});renderActions();chirp(540,.1);
+    setTimeout(()=>{if(!game||game.stage!=="draw")return;replaceCards("player",chosen);game.drawIndex++;game.actor=null;game.busy=false;$("statusLine").textContent="새 카드가 당신 앞에 도착합니다.";renderCards();advanceDrawTurn();},760);
+  }
+  function replaceCards(id,indices){const arr=id==="player"?game.playerCards:game.aiCards,replacements=[];indices.forEach(i=>{const card=take(1)[0];arr[i]=card;replacements.push(card);});game.newlyDealt[id]=replacements;}
+  function compareHands(a,b){const x=evaluate(a),y=evaluate(b);if(x.cat!==y.cat)return x.cat>y.cat?1:-1;const n=Math.max(x.kickers.length,y.kickers.length);for(let i=0;i<n;i++){const xv=x.kickers[i]||0,yv=y.kickers[i]||0;if(xv!==yv)return xv>yv?1:-1;}return 0;}
+  function showdown(){if(!game)return;game.stage="showdown";setProgress("showdown");game.actor=null;renderAll();const cmp=compareHands(game.playerCards,game.aiCards),winner=cmp===0?"tie":cmp>0?"player":"ai";$("aiCards").innerHTML=game.aiCards.map((c,i)=>cardHTML(c,{index:i,reveal:true})).join("");$("phaseLabel").textContent="서로의 패를 공개합니다";$("roundTag").textContent="THE REVEAL";$("statusLine").textContent="당신: "+handNames[evaluate(game.playerCards).cat]+"  ·  상대: "+handNames[evaluate(game.aiCards).cat]+" — 잠시 뒤 판돈을 정산합니다.";triggerCallout("패를 공개합니다");chirp(610,.24);setTimeout(()=>resolveHand(winner,"쇼다운"),3000);}
+  function resolveHand(winner,reason){
+    if(!game)return;game.stage="done";game.actor=null;game.busy=false;const award=game.pot;
+    if(winner==="tie"){const odd=award%2,playerShare=Math.floor(award/2)+(odd&&game.initiative==="player"?1:0);game.playerStack+=playerShare;game.aiStack+=award-playerShare;}
+    else{game[winner==="player"?"playerStack":"aiStack"]+=award;}
+    game.pot=0;
+    if((winner==="player"||winner==="tie")&&game.debt>0){const paid=Math.min(game.playerStack,game.debt);game.playerStack-=paid;game.debt-=paid;if(game.debt===0){ledger.souls=ledger.souls.concat(game.pledged);game.pledged=[];saveLedger();}}
+    session.playerStack=game.playerStack;session.aiStack=game.aiStack;session.debt=game.debt;session.pledged=game.pledged.slice();updateTable();
+    if(game.playerStack<=0){
+      const lastChips=Math.max(1,game.playerContributed);ledger.souls.push({name:ledger.name||"이름 없는 방문자",chips:lastChips,at:Date.now()});game.pledged=[];game.debt=0;saveLedger();showLoss(reason,lastChips);return;
+    }
+    if(game.aiStack<=0){
+      ledger.souls.push({name:game.opponent,chips:Math.max(1,game.aiContributed),at:Date.now()});saveLedger();showWin(reason,award);return;
+    }
+    showHandResult(winner,reason,award);
+  }
+  function showHandResult(winner,reason,award){
+    const title=winner==="tie"?"판돈을 나누었습니다":winner==="player"?"이번 판을 가져왔습니다":"이번 판은 상대가 가져갔습니다";
+    const message=winner==="tie"?"같은 패입니다. 팟을 나눠 각자의 칩에 더했습니다.":winner==="player"?"팟 "+award+"칩이 당신의 칩에 더해졌습니다. 상대도 아직 칩이 남아 있습니다.":"팟 "+award+"칩을 잃었습니다. 그래도 당신에게 "+game.playerStack+"칩이 남아 있어 계속할 수 있습니다.";
+    const el=$("result");el.className="hand-result";el.classList.remove("hidden");el.innerHTML='<div class="reward-coins"><i></i><i></i><i></i><i></i><i></i></div><div class="result-content"><div class="result-mark">'+(winner==="tie"?"Ⅱ":winner==="player"?"✦":"·")+'</div><div class="eyebrow">HAND '+String(handNumber).padStart(2,"0")+' · '+reason+'</div><h2 class="serif">'+title+'</h2><p>'+message+'</p><div class="result-meta">당신 '+game.playerStack+'칩&nbsp; · &nbsp;상대 '+game.aiStack+'칩&nbsp; · &nbsp;기록소 '+ledger.souls.length+'명</div><div class="result-actions"><button class="primary-btn" id="continueHand">다음 판 받기&nbsp; →</button></div></div>';
+    $("continueHand").onclick=()=>{el.classList.add("hidden");startHand();};chirp(winner==="player"?550:260,.2);
+  }
+  function showWin(reason,award){
+    const el=$("result");el.className="win";el.classList.remove("hidden");el.innerHTML='<div class="departing-soul"></div><div class="reward-coins"><i></i><i></i><i></i><i></i><i></i></div><div class="result-content"><div class="result-mark">✦</div><div class="eyebrow">THE HOUSE REMEMBERS</div><h2 class="serif">그의 영혼이 떠났다</h2><p>'+game.opponent+'의 이름이 기록소에 잠들었습니다.<br>상대의 남은 칩까지 거두고 당신은 테이블을 떠납니다.</p><div class="result-meta">마지막 팟 '+award+' CHIPS&nbsp; · &nbsp;최종 보유 '+game.playerStack+' CHIPS&nbsp; · &nbsp;승리 방식 '+reason+'</div><div class="result-actions"><button class="primary-btn" id="nextBtn">칩을 챙겨 다음 상대에게&nbsp; →</button><button class="text-btn" id="leaveBtn">로비로 돌아가기</button></div></div>';
+    $("nextBtn").onclick=()=>{const carried=game.playerStack;el.classList.add("hidden");startSession(carried);};$("leaveBtn").onclick=()=>{el.classList.add("hidden");game=null;session=null;showOnly("lobby");updateLobbyArchive();};chirp(690,.75,"triangle");
+  }
+  function showLoss(reason,lastChips){
+    const el=$("result");el.className="loss";el.classList.remove("hidden");el.innerHTML='<div class="departing-soul"></div><div class="fallen-body"></div><div class="result-content loss-copy"><div class="result-mark">L</div><div class="eyebrow">YOUR NAME JOINS THE ARCHIVE</div><h2 class="serif">너는 졌다</h2><p>몸은 의자 아래로 가라앉고, 영혼은 문 너머로 사라집니다.<br>마지막에 모인 '+lastChips+'칩은 기록소에 남았습니다.<br>그 이름은 기록소의 장부에 남았습니다.</p><div class="result-meta">패배 방식 '+reason+' · 기록소 '+ledger.souls.length+'명</div><div class="result-actions"><button class="primary-btn" id="returnBtn">로비로 돌아가기&nbsp; →</button></div></div>';
+    $("returnBtn").onclick=()=>{el.classList.add("hidden");game=null;session=null;showOnly("lobby");updateLobbyArchive();};chirp(95,.95,"sawtooth");
+  }
+  updateLobbyArchive();
+})();
+</script>
+</body>
+</html>
+
